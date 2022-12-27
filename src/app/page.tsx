@@ -1,7 +1,5 @@
 import Link from "next/link";
-
 import { redirect } from "next/navigation";
-
 import LogoutButton from "./LogoutButton";
 import { getSession } from "../utils/getSession";
 
