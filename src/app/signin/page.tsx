@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import Buttons from "./Buttons";
+import Buttons from "../../components/Buttons";
 import { getProviders } from "next-auth/react";
 import { getSession } from "../../utils/getSession";
 

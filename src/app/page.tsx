@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../components/LogoutButton";
 import { getSession } from "../utils/getSession";
 
 export default async function Page() {
   const session = await getSession();
+  console.log("🚀 ~ file: page.tsx:8 ~ Page ~ session", session);
 
   if (!session) {
     redirect("/signin");
