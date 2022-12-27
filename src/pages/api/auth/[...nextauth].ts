@@ -1,5 +1,6 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
@@ -16,6 +17,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -23,8 +25,19 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    // ...add more providers here
+    GithubProvider({
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+    }),
   ],
+
+  pages: {
+    signIn: "/signin",
+    signOut: "/signout",
+    error: "/error", // Error code passed in query string as ?error=
+    verifyRequest: "/verify-request", // (used for check email message)
+    newUser: "/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
 };
 
 export default NextAuth(authOptions);
