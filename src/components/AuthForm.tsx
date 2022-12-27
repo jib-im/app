@@ -6,8 +6,9 @@ import { useState, useEffect } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import Balancer from "react-wrap-balancer";
 import { useHydrationFailedHack } from "../hooks/useHydrationFailedHack";
+import { NextAuthErrorMessage } from "../utils/NextAuthErrorMessage";
 
-const AuthForm = () => {
+const AuthForm = ({ error }: { error?: string }) => {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<{
     email: { loading: boolean; error: string | null; status: string };
@@ -87,29 +88,29 @@ const AuthForm = () => {
                   error: null,
                 },
               }));
-            }, 2000);
+            }, 5000);
           }}
           className="flex w-full flex-col items-center gap-y-3"
         >
-          {/* <div className="flex w-full flex-col gap-y-1"> */}
-          <label
-            htmlFor="email"
-            className="w-full text-left text-sm text-gray-300"
-          >
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="brice@slash.ly"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
-            required={true}
-            minLength={3}
-            disabled={state.email.loading}
-          />
-          {/* </div> */}
+          <div className="flex w-full flex-col gap-y-1">
+            <label
+              htmlFor="email"
+              className="w-full text-left text-sm text-gray-300"
+            >
+              Email address
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="brice@slash.ly"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
+              required={true}
+              minLength={3}
+              disabled={state.email.loading}
+            />
+          </div>
           <button
             type="submit"
             disabled={state.email.loading}
@@ -129,7 +130,15 @@ const AuthForm = () => {
                   loading: true,
                 },
               }));
-              await signIn("google", { callbackUrl: "/" });
+              await signIn("google", { callbackUrl: "/" }).catch((error) => {
+                setState((state) => ({
+                  ...state,
+                  google: {
+                    ...state.google,
+                    error,
+                  },
+                }));
+              });
               setState((state) => ({
                 ...state,
                 google: {
@@ -153,7 +162,15 @@ const AuthForm = () => {
                   loading: true,
                 },
               }));
-              await signIn("github", { callbackUrl: "/" });
+              await signIn("github", { callbackUrl: "/" }).catch((error) => {
+                setState((state) => ({
+                  ...state,
+                  github: {
+                    ...state.github,
+                    error,
+                  },
+                }));
+              });
               setState((state) => ({
                 ...state,
                 github: {
@@ -169,6 +186,13 @@ const AuthForm = () => {
             {!state.github.loading ? "Sign in with Github" : "Loading..."}
           </button>
         </div>
+        {error && (
+          <Balancer>
+            <p className="text-center text-xs text-red-500">
+              {NextAuthErrorMessage(error)}
+            </p>
+          </Balancer>
+        )}
       </div>
     </div>
   );
