@@ -45,7 +45,8 @@ const AuthForm = () => {
       <hr className="border-gray-700 bg-gray-700 text-gray-700" />
       <div className="flex flex-col items-center gap-y-4 py-8 px-4 sm:px-16">
         <form
-          onSubmit={async () => {
+          onSubmit={async (e) => {
+            e.preventDefault();
             setState((state) => ({
               ...state,
               email: { ...state.email, loading: true },
@@ -76,6 +77,17 @@ const AuthForm = () => {
               ...state,
               email: { ...state.email, loading: false },
             }));
+
+            setTimeout(() => {
+              setState((state) => ({
+                ...state,
+                email: {
+                  ...state.email,
+                  status: "Send magic link",
+                  error: null,
+                },
+              }));
+            }, 2000);
           }}
           className="flex w-full flex-col items-center gap-y-3"
         >
@@ -103,7 +115,7 @@ const AuthForm = () => {
             disabled={state.email.loading}
             className="w-full rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-black transition-colors hover:bg-transparent hover:text-gray-300"
           >
-            {!state.email.loading ? "Send magic link" : "Loading..."}
+            {!state.email.loading ? state.email.status : "Loading..."}
           </button>
         </form>
         <p className="text-gray-500">or</p>
@@ -117,7 +129,7 @@ const AuthForm = () => {
                   loading: true,
                 },
               }));
-              await signIn("google");
+              await signIn("google", { callbackUrl: "/" });
               setState((state) => ({
                 ...state,
                 google: {
@@ -130,7 +142,7 @@ const AuthForm = () => {
             className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-500 px-4 py-2 transition-colors hover:bg-gray-50 hover:text-black"
           >
             <FaGoogle className="text-lg" />
-            Sign in with Google
+            {!state.google.loading ? "Sign in with Google" : "Loading..."}
           </button>
           <button
             onClick={async () => {
@@ -141,7 +153,7 @@ const AuthForm = () => {
                   loading: true,
                 },
               }));
-              await signIn("github");
+              await signIn("github", { callbackUrl: "/" });
               setState((state) => ({
                 ...state,
                 github: {
@@ -154,7 +166,7 @@ const AuthForm = () => {
             className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-500 px-4 py-2 transition-colors hover:bg-gray-50 hover:text-black"
           >
             <FaGithub className="text-lg" />
-            Sign in with Github
+            {!state.github.loading ? "Sign in with Github" : "Loading..."}
           </button>
         </div>
       </div>
