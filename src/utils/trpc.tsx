@@ -1,7 +1,7 @@
 "use client";
 
 import { httpBatchLink, loggerLink } from "@trpc/client";
-import { createTRPCNext } from "@trpc/next";
+// import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
