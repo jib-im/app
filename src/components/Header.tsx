@@ -1,4 +1,4 @@
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
@@ -28,7 +28,7 @@ const Header = ({ session }: Props) => {
           </>
         ) : (
           <>
-            <Link href="/signin">Sign In</Link>
+            <Link href="/login">Sign In</Link>
           </>
         )}
       </div>

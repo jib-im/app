@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
-      // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+      maxAge: 3 * 60 * 60, // How long email links are valid for (default 24h) (3 hrs)
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -37,13 +37,13 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
-  pages: {
-    signIn: "/login",
-    signOut: "/signout",
-    error: "/error", // Error code passed in query string as ?error=
-    verifyRequest: "/verify-request", // (used for check email message)
-    newUser: "/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
-  },
+  // pages: {
+  //   signIn: "/login",
+  //   signOut: "/signout",
+  //   error: "/error", // Error code passed in query string as ?error=
+  //   verifyRequest: "/verify-request", // (used for check email message)
+  //   newUser: "/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+  // },
 };
 
 export default NextAuth(authOptions);

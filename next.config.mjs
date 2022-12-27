@@ -8,7 +8,7 @@
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["lh3.googleusercontent.com", "avatars.githubusercontent.com"],
   },
   reactStrictMode: true,
   swcMinify: true,

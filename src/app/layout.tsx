@@ -16,13 +16,15 @@ export default async function RootLayout({
 }) {
   const session = await getSession();
   return (
-    <html lang="en" className={poppins.variable}>
-      <body className="bg-gray-900 font-sans text-white">
-        <TRPCProvider>
-          <Providers session={session}>{children}</Providers>
-          <AnalyticsWrapper />
-        </TRPCProvider>
-      </body>
-    </html>
+    <TRPCProvider>
+      <Providers session={session}>
+        <html lang="en" className={poppins.variable}>
+          <body className="bg-gray-900 font-sans text-white">
+            {children}
+            <AnalyticsWrapper />
+          </body>
+        </html>
+      </Providers>
+    </TRPCProvider>
   );
 }
