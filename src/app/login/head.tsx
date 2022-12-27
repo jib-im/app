@@ -1,7 +1,7 @@
 export default function Head() {
   return (
     <>
-      <title>Sign In - slash.ly</title>
+      <title>Sign in - slash.ly</title>
       <meta name="description" content="slash.ly - link shortener" />
     </>
   );

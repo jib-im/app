@@ -1,6 +1,7 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import EmailProvider from "next-auth/providers/email";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
@@ -21,6 +22,11 @@ export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+      // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+    }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
@@ -32,7 +38,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   pages: {
-    signIn: "/signin",
+    signIn: "/login",
     signOut: "/signout",
     error: "/error", // Error code passed in query string as ?error=
     verifyRequest: "/verify-request", // (used for check email message)
