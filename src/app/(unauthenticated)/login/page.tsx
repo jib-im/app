@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import AuthForm from "../../components/AuthForm";
-import { getSession } from "../../utils/getSession";
+import AuthForm from "../../../components/AuthForm";
+import { getSession } from "../../../utils/getSession";
 
 export default async function Page({
   searchParams,

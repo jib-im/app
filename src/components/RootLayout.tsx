@@ -1,20 +1,21 @@
 import "../styles/globals.css";
-import { getSession } from "../utils/getSession";
 import { TRPCProvider } from "../utils/trpc";
-import Providers from "../components/providers";
+import Providers from "./providers";
 import { Poppins } from "@next/font/google";
-import { AnalyticsWrapper } from "../components/AnalyticsWrapper";
+import { AnalyticsWrapper } from "./AnalyticsWrapper";
+import { Session } from "next-auth";
+
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-poppins",
 });
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: Session | null;
 }) {
-  const session = await getSession();
   return (
     <TRPCProvider>
       <Providers session={session}>

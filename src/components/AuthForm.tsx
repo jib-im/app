@@ -26,16 +26,13 @@ const AuthForm = ({ error }: { error?: string }) => {
   return (
     <div className="w-96 max-w-[24rem] rounded-xl bg-gray-800 text-sm shadow-lg">
       <div className="flex flex-col items-center gap-y-2 py-8 px-4 text-center sm:px-12">
-        <Link
-          href="https://slash.ly/"
-          className="relative h-12 w-12 rounded-full"
-        >
+        <Link href="https://slash.ly/" className="overflow-hidden rounded-full">
           <Image
-            src="/favicon.ico"
+            src="/images/slash-logo.png"
             alt="Slash.ly Logo"
-            fill
-            sizes="100%"
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            width={64}
+            height={64}
+            className="object-cover object-center"
           />
         </Link>
         <h3 className="text-lg font-bold">Sign In</h3>
