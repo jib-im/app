@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useHydrationFailedHack = () => {
   const [mounted, setMounted] = useState(false);

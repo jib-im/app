@@ -25,7 +25,7 @@ const AuthForm = ({ error }: { error?: string }) => {
 
   return (
     <div className="w-96 max-w-[24rem] rounded-xl bg-gray-800 text-sm shadow-lg">
-      <div className="flex flex-col items-center gap-y-2 py-8 px-4 text-center sm:px-12">
+      <div className="flex flex-col items-center gap-y-2 py-6 px-4 text-center sm:px-12">
         <Link href="https://slash.ly/" className="overflow-hidden rounded-full">
           <Image
             src="/images/slash-logo.png"
@@ -41,7 +41,7 @@ const AuthForm = ({ error }: { error?: string }) => {
         </Balancer>
       </div>
       <hr className="border-gray-700 bg-gray-700 text-gray-700" />
-      <div className="flex flex-col items-center gap-y-4 py-8 px-4 sm:px-12">
+      <div className="flex flex-col items-center gap-y-4 py-6 px-4 sm:px-12">
         <form
           onSubmit={async (e) => {
             e.preventDefault();
