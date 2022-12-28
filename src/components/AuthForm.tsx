@@ -2,7 +2,7 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import Balancer from "react-wrap-balancer";
 import { useHydrationFailedHack } from "../hooks/useHydrationFailedHack";
