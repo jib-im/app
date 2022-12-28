@@ -2,20 +2,17 @@
 import { Tab } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { TABS } from "../contants/contants";
 
 const HeaderTab = () => {
-  const tabs = [
-    { name: "My Links", href: "/" },
-    { name: "Settings", href: "/settings" },
-  ];
   const pathname = usePathname();
 
-  const selected = tabs.findIndex((tab) => tab.href === pathname);
+  const selected = TABS.findIndex((tab) => tab.href === pathname);
 
   return (
     <Tab.Group defaultIndex={selected}>
       <Tab.List className="flex gap-x-1 rounded-xl px-4">
-        {tabs.map((tab, index) => (
+        {TABS.map((tab, index) => (
           <Link
             key={tab.name}
             href={tab.href}
