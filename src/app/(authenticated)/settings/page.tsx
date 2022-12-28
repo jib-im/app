@@ -1,6 +1,3 @@
-"use client";
-const Page = () => {
-  return <div>Settings</div>;
-};
-
-export default Page;
+export default function Page() {
+  return <section>Settings</section>;
+}

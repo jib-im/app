@@ -19,7 +19,7 @@ export default async function Layout({
 
       <PageTitle />
 
-      <main className="mx-auto flex max-w-screen-lg p-4">{children}</main>
+      <main className="mx-auto flex max-w-screen-lg  p-4">{children}</main>
     </RootLayout>
   );
 }

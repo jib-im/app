@@ -7,7 +7,7 @@ import HeaderTab from "./HeaderTab";
 
 const Header = ({ session }: { session: Session | null }) => {
   return (
-    <header className="sticky top-0 border-b border-gray-800 bg-gray-900">
+    <header className="sticky top-0 z-40 border-b border-gray-800 bg-gray-900">
       <div className="mx-auto max-w-screen-lg">
         <div className="flex justify-between gap-x-4 p-4 pb-0">
           <div className="flex items-center gap-x-4">
