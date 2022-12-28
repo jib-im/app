@@ -1,16 +1,10 @@
-import { redirect } from "next/navigation";
 import AuthForm from "../../../components/AuthForm";
-import { getSession } from "../../../utils/getSession";
 
-export default async function Page({
+export default function Page({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const session = await getSession();
-  if (session) {
-    redirect("/");
-  }
   return (
     <main className="flex min-h-screen items-center justify-center">
       <AuthForm error={searchParams?.error as string} />

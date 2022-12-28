@@ -3,7 +3,7 @@ import { TRPCProvider } from "../utils/trpc";
 import Providers from "./providers";
 import { Poppins } from "@next/font/google";
 import { AnalyticsWrapper } from "./AnalyticsWrapper";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
