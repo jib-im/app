@@ -41,9 +41,7 @@ const Links = () => {
         </p>
       </div>
       <div className="relative flex items-center gap-x-2 text-sm text-gray-400">
-        <p className="hidden truncate text-sm leading-none sm:block">
-          5 hrs ago
-        </p>
+        <p className="hidden text-sm leading-none sm:block">5 hrs ago</p>
         <Menu>
           <Menu.Button className="rounded-md px-1.5 py-2 transition-colors hover:bg-gray-500">
             <FaEllipsisV />

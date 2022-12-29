@@ -1,7 +1,7 @@
 "use client";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { FaCheck, FaStream } from "react-icons/fa";
+import { FaCheck, FaChevronDown, FaStream } from "react-icons/fa";
 import { STATUS_BAR } from "../contants/contants";
 
 const HomeStatusBar = () => {
@@ -13,12 +13,12 @@ const HomeStatusBar = () => {
           className="-sm relative inline-block text-left"
           key={menuItem.title}
         >
-          <Menu.Button className="flex w-40 items-center justify-between gap-x-2 rounded-md border border-gray-700/50 px-4 py-2 text-sm shadow transition-colors hover:bg-gray-800">
+          <Menu.Button className="flex w-full items-center justify-between gap-x-2 rounded-md border border-gray-700/50 px-4 py-2 text-xs shadow transition-colors hover:bg-gray-800 sm:w-40 sm:text-sm">
             <div className="flex items-center gap-x-2">
-              <FaStream />
+              {menuItem.icon}
               {menuItem.title}
             </div>
-            {menuItem.icon}
+            <FaChevronDown aria-hidden="true" />
           </Menu.Button>
 
           <Transition
