@@ -23,6 +23,7 @@ model Link {
   description String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  clicks    Int      @default(0)
 
   userId       String
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
