@@ -20,7 +20,7 @@ const HeaderTab = () => {
               selected === index && "border-b"
             } group border-gray-500 px-1 py-2 outline-none`}
           >
-            <Tab className="w-full max-w-fit rounded-lg px-4 py-2 text-sm text-white outline-none group-hover:bg-gray-800">
+            <Tab className="w-full max-w-fit rounded-md px-4 py-2 text-sm text-white outline-none group-hover:bg-gray-800">
               {tab.name}
             </Tab>
           </Link>
