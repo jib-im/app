@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageTitle from "../../components/PageTitle";
 import RootLayout from "../../components/RootLayout";
@@ -19,7 +20,10 @@ export default async function Layout({
 
       <PageTitle />
 
-      <main className="mx-auto flex max-w-screen-lg  p-4">{children}</main>
+      <main className="mx-auto flex min-h-[38rem] max-w-screen-lg p-4">
+        {children}
+      </main>
+      <Footer />
     </RootLayout>
   );
 }
