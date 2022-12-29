@@ -78,10 +78,10 @@ const Links = () => {
                 ].map((item) => (
                   <Menu.Item key={item.title}>
                     <button
-                      className={`flex flex-1 items-center gap-x-3 rounded-md px-4 py-2 hover:bg-gray-700 ${
+                      className={`flex flex-1 items-center gap-x-3 rounded-md px-4 py-2 ${
                         item.title === "Delete"
-                          ? "text-red-400"
-                          : "text-gray-300"
+                          ? "text-red-400 hover:bg-red-800 hover:text-gray-300"
+                          : "text-gray-300 hover:bg-gray-700"
                       }`}
                       onClick={() => {
                         switch (item.title) {

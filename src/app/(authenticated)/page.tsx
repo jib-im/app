@@ -1,3 +1,5 @@
+"use client";
+
 import Links from "../../components/Links";
 import HomeStatusBar from "../../components/HomeStatusBar";
 
