@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -30,7 +31,7 @@ const HeaderProfile = ({ session }: Props) => {
       </Menu.Button>
 
       <Transition
-        //   as={Fragment}
+        as={Fragment}
         enter="transition ease-out duration-100"
         enterFrom="transform opacity-0 scale-95"
         enterTo="transform opacity-100 scale-100"
@@ -38,22 +39,16 @@ const HeaderProfile = ({ session }: Props) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="px-1 py-1 ">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={() => signOut()}
-                  className={`${
-                    active ? "bg-gray-700" : "bg-gray-600"
-                  } group flex w-full items-center gap-x-2 rounded-md px-2 py-2 text-sm text-gray-50 focus-within:bg-gray-800`}
-                >
-                  <FaSignOutAlt />
-                  Log out
-                </button>
-              )}
-            </Menu.Item>
-          </div>
+        <Menu.Items className="absolute right-0 mt-1 w-44 origin-top-right rounded-md bg-gray-800 p-2 shadow-lg">
+          <Menu.Item>
+            <button
+              onClick={() => signOut()}
+              className="flex w-full items-center gap-x-2 rounded-md px-2 py-2 text-sm text-gray-50 hover:bg-gray-700"
+            >
+              <FaSignOutAlt />
+              Log out
+            </button>
+          </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>

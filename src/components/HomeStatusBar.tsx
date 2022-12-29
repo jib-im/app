@@ -1,7 +1,7 @@
 "use client";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { FaCheck, FaChevronDown, FaStream } from "react-icons/fa";
+import { FaCheck, FaChevronDown } from "react-icons/fa";
 import { STATUS_BAR } from "../contants/contants";
 
 const HomeStatusBar = () => {

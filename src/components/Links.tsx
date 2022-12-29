@@ -11,7 +11,8 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import Link from "next/link";
-import LinkModal, { ModalType } from "./LinkModal";
+import LinkModal from "./LinkModal";
+import type { ModalType } from "./LinkModal";
 import { useModal } from "../hooks/useModal";
 
 const Links = () => {
@@ -54,7 +55,7 @@ const Links = () => {
         <div className="relative flex items-center gap-x-2 text-sm text-gray-400">
           <p className="hidden text-sm leading-none sm:block">5 hrs ago</p>
           <Menu>
-            <Menu.Button className="rounded-md px-1.5 py-2 transition-colors hover:bg-gray-500">
+            <Menu.Button className="rounded-md px-1.5 py-2 transition-colors hover:bg-gray-500/25">
               <FaEllipsisV />
             </Menu.Button>
 
