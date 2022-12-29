@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import { TRPCProvider } from "../utils/trpc";
 import Providers from "./providers";
 import { Poppins } from "@next/font/google";
 import { AnalyticsWrapper } from "./AnalyticsWrapper";
@@ -17,15 +16,13 @@ export default function RootLayout({
   session: Session | null;
 }) {
   return (
-    <TRPCProvider>
-      <Providers session={session}>
-        <html lang="en" className={poppins.variable}>
-          <body className="bg-gray-900 font-sans text-white">
-            {children}
-            <AnalyticsWrapper />
-          </body>
-        </html>
-      </Providers>
-    </TRPCProvider>
+    <Providers session={session}>
+      <html lang="en" className={poppins.variable}>
+        <body className="bg-gray-900 font-sans text-white">
+          {children}
+          <AnalyticsWrapper />
+        </body>
+      </html>
+    </Providers>
   );
 }

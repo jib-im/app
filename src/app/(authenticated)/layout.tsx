@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import PageTitle from "../../components/PageTitle";
 import RootLayout from "../../components/RootLayout";
 import { getSession } from "../../utils/getSession";
+import { ClientProvider } from "../../utils/trpc";
 
 export default async function Layout({
   children,
@@ -16,14 +17,14 @@ export default async function Layout({
   }
   return (
     <RootLayout session={session}>
-      <Header session={session} />
-
-      <PageTitle />
-
-      <main className="mx-auto min-h-[38rem] max-w-screen-lg p-4">
-        {children}
-      </main>
-      <Footer />
+      <ClientProvider>
+        <Header session={session} />
+        <PageTitle />
+        <main className="mx-auto min-h-[38rem] max-w-screen-lg p-4">
+          {children}
+        </main>
+        <Footer />
+      </ClientProvider>
     </RootLayout>
   );
 }

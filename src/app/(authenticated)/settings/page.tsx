@@ -1,4 +1,3 @@
-"use client";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import Balancer from "react-wrap-balancer";
 
