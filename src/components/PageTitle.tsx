@@ -11,7 +11,11 @@ const PageTitle = () => {
 
   return (
     <>
-      <LinkModal isOpen={isOpen} closeModal={closeModal} />
+      <LinkModal
+        isOpen={isOpen}
+        closeModal={closeModal}
+        modalType={{ type: "add" }}
+      />
       <section className="border-b border-gray-800 bg-gray-900 text-white">
         <div className="mx-auto flex h-32 max-w-screen-lg items-center justify-between px-4">
           <h1 className="text-2xl">
