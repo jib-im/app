@@ -3,7 +3,7 @@ import Balancer from "react-wrap-balancer";
 
 export default function Settings() {
   return (
-    <section className="mx-auto flex min-h-[46.5rem] max-w-screen-lg p-4">
+    <section className="mx-auto flex min-h-[38.75rem] max-w-screen-lg p-4">
       <div className="w-full">
         <div className="rounded-lg bg-gray-800">
           <div className="space-y-4 p-8">

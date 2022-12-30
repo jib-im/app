@@ -6,7 +6,7 @@ export default function Dashboard() {
   const linksQuery = trpc.link.getLinks.useQuery();
 
   return (
-    <section className="mx-auto flex min-h-[46.5rem] w-full max-w-screen-lg flex-col items-end gap-y-4 p-4">
+    <section className="mx-auto flex min-h-[38.75rem] w-full max-w-screen-lg flex-col items-end gap-y-4 p-4">
       <HomeStatusBar />
       <div className="flex w-full flex-col gap-y-4">
         {!linksQuery.data ? (

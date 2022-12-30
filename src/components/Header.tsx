@@ -6,6 +6,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { signOut } from "next-auth/react";
 import { FaSignOutAlt } from "react-icons/fa";
+import PageTitle from "./PageTitle";
 
 const Header = ({ session }: { session: Session | null }) => {
   return (
@@ -82,6 +83,7 @@ const Header = ({ session }: { session: Session | null }) => {
         </div>
         <HeaderTab />
       </div>
+      <PageTitle />
     </header>
   );
 };
