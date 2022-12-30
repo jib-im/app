@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
     signOut: "/signout",
     error: "/error", // Error code passed in query string as ?error=
-    verifyRequest: "/verify-request", // (used for check email message)
+    verifyRequest: "/verify", // (used for check email message)
     newUser: "/welcome", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 };

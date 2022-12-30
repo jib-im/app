@@ -1,11 +1,10 @@
-"use client";
 import { Tab } from "@headlessui/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { TABS } from "../contants/contants";
 
 const HeaderTab = () => {
-  const pathname = usePathname();
+  const { pathname } = useRouter();
 
   const selected = TABS.findIndex((tab) => tab.href === pathname);
 

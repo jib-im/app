@@ -20,7 +20,6 @@ const config = {
     fontLoaders: [
       { loader: "@next/font/google", options: { subsets: ["latin"] } },
     ],
-    appDir: true,
   },
 };
 export default config;

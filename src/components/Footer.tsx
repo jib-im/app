@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaTwitter } from "react-icons/fa";
@@ -12,11 +11,11 @@ const Footer = () => {
     <footer className="border-t border-gray-800">
       <section className="mx-auto flex max-w-screen-lg items-center justify-center gap-x-8 p-4 text-gray-300">
         <Link
-          href="https://jib.im/twitter"
+          href="https://jib.im/github"
           className="transition-opacity hover:opacity-75"
           target="_blank"
         >
-          <FaTwitter className="h-6 w-6" />
+          <FaGithub className="h-6 w-6" />
         </Link>
         <Link
           href="https://jib.im"
@@ -31,11 +30,11 @@ const Footer = () => {
           />
         </Link>
         <Link
-          href="https://jib.im/github"
+          href="https://jib.im/twitter"
           className="transition-opacity hover:opacity-75"
           target="_blank"
         >
-          <FaGithub className="h-6 w-6" />
+          <FaTwitter className="h-6 w-6" />
         </Link>
       </section>
     </footer>

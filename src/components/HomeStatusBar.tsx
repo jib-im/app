@@ -1,4 +1,3 @@
-"use client";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
