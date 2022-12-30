@@ -14,12 +14,14 @@ const Footer = () => {
         <Link
           href="https://jib.im/twitter"
           className="transition-opacity hover:opacity-75"
+          target="_blank"
         >
           <FaTwitter className="h-6 w-6" />
         </Link>
         <Link
           href="https://jib.im"
           className="relative overflow-hidden rounded-full border border-gray-700/50 transition-opacity hover:opacity-75"
+          target="_blank"
         >
           <Image
             src="/images/jib-logo.png"
@@ -31,6 +33,7 @@ const Footer = () => {
         <Link
           href="https://jib.im/github"
           className="transition-opacity hover:opacity-75"
+          target="_blank"
         >
           <FaGithub className="h-6 w-6" />
         </Link>

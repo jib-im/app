@@ -49,7 +49,7 @@ const Links = () => {
             </Link>
           </div>
           <p className="w-52 truncate text-xs text-gray-300 sm:w-96 sm:text-sm md:w-[28rem] lg:w-[32rem]">
-            https://github.com/jib-ly
+            https://github.com/jib-im
           </p>
         </div>
         <div className="relative flex items-center gap-x-2 text-sm text-gray-400">

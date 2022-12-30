@@ -136,7 +136,7 @@ const LinkModal = ({
                               type="url"
                               name="destination-link"
                               id="destination-link"
-                              placeholder="https://github.com/jib-ly/app"
+                              placeholder="https://github.com/jib-im"
                               className="block w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
                             />
                           </label>
@@ -216,7 +216,7 @@ const LinkModal = ({
                               type="url"
                               name="destination-link"
                               id="destination-link"
-                              placeholder="https://github.com/jib-ly/app"
+                              placeholder="https://github.com/jib-im"
                               className="block w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
                             />
                           </label>
