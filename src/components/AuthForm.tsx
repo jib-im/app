@@ -26,10 +26,10 @@ const AuthForm = ({ error }: { error?: string }) => {
   return (
     <div className="w-96 max-w-[24rem] rounded-xl bg-gray-800 text-sm shadow-lg">
       <div className="flex flex-col items-center gap-y-2 py-6 px-4 text-center sm:px-12">
-        <Link href="https://slash.ly/" className="overflow-hidden rounded-full">
+        <Link href="https://jib.im/" className="overflow-hidden rounded-full">
           <Image
-            src="/images/slash-logo.png"
-            alt="Slash.ly Logo"
+            src="/images/jib-logo.png"
+            alt="jib.im Logo"
             width={64}
             height={64}
             className="object-cover object-center"
@@ -100,7 +100,7 @@ const AuthForm = ({ error }: { error?: string }) => {
             <input
               id="email"
               type="email"
-              placeholder="brice@slash.ly"
+              placeholder="brice@jib.im"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
@@ -116,6 +116,9 @@ const AuthForm = ({ error }: { error?: string }) => {
           >
             {!state.email.loading ? state.email.status : "Loading..."}
           </button>
+          <span className="px-4 text-center text-xs text-red-700">
+            not yet working - try logging in with your google or github account
+          </span>
         </form>
         <p className="text-gray-500">or</p>
         <div className="flex w-full flex-col items-center gap-y-2">

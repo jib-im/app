@@ -66,8 +66,8 @@ const LinkModal = ({
                 </button>
                 <Dialog.Title className="flex flex-col items-center gap-y-2 py-6 px-4 text-center sm:px-8">
                   <Image
-                    src="/images/slash-logo.png"
-                    alt="Slash.ly logo"
+                    src="/images/jib-logo.png"
+                    alt="Jib.im logo"
                     width={48}
                     height={48}
                     className="rounded-full object-cover object-center"
@@ -78,11 +78,11 @@ const LinkModal = ({
                         case "add":
                           return "Add new link";
                         case "edit":
-                          return `Edit slash.ly/${modalType.link.shortUrl}`;
+                          return `Edit jib.im/${modalType.link.shortUrl}`;
                         case "archive":
-                          return `Archive slash.ly/${modalType.link.shortUrl}`;
+                          return `Archive jib.im/${modalType.link.shortUrl}`;
                         case "delete":
-                          return `Delete slash.ly/${modalType.link.shortUrl}`;
+                          return `Delete jib.im/${modalType.link.shortUrl}`;
                       }
                     })()}
                   </span>
@@ -136,7 +136,7 @@ const LinkModal = ({
                               type="url"
                               name="destination-link"
                               id="destination-link"
-                              placeholder="https://github.com/slash-ly/app"
+                              placeholder="https://github.com/jib-ly/app"
                               className="block w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
                             />
                           </label>
@@ -165,7 +165,7 @@ const LinkModal = ({
                             </div>
                             <div className="flex">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-gray-600 px-3 text-sm text-gray-300">
-                                slash.ly
+                                jib.im
                               </span>
                               <input
                                 value={state.shortLink}
@@ -216,7 +216,7 @@ const LinkModal = ({
                               type="url"
                               name="destination-link"
                               id="destination-link"
-                              placeholder="https://github.com/slash-ly/app"
+                              placeholder="https://github.com/jib-ly/app"
                               className="block w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
                             />
                           </label>
@@ -245,7 +245,7 @@ const LinkModal = ({
                             </div>
                             <div className="flex">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-gray-600 px-3 text-sm text-gray-300">
-                                slash.ly
+                                jib.im
                               </span>
                               <input
                                 value={state.shortLink}
@@ -303,14 +303,14 @@ const LinkModal = ({
                             <p className="mb-1 text-gray-400">
                               To verify, type{" "}
                               <span className="font-medium text-gray-100">
-                                slash.ly/{modalType.link.shortUrl}
+                                jib.im/{modalType.link.shortUrl}
                               </span>{" "}
                               below
                             </p>
                             <input
                               type="text"
                               required
-                              pattern={`slash.ly/${modalType.link.shortUrl}`}
+                              pattern={`jib.im/${modalType.link.shortUrl}`}
                               id="delete-confirmation"
                               className="block w-full rounded-md border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
                             />

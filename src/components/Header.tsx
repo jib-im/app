@@ -12,7 +12,7 @@ const Header = ({ session }: { session: Session | null }) => {
         <div className="flex justify-between gap-x-4 p-4 pb-0">
           <div className="flex items-center gap-x-4">
             <Link href="/">
-              <h3 className="text-lg font-bold">slash</h3>
+              <h3 className="text-lg font-bold">jib</h3>
             </Link>
             <div className="pointer-events-none hidden select-none text-gray-500 sm:block">
               /

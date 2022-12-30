@@ -19,10 +19,18 @@ const HeaderProfile = ({ session }: Props) => {
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-gray-500 bg-opacity-20 p-1 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-50 focus-visible:ring-opacity-75">
-        {session && session.user && session.user.image && (
+        {session && session.user && session.user.image ? (
           <Image
             src={session.user.image}
             alt={`${session.user.name}'s profile picture`}
+            width={32}
+            height={32}
+            className="rounded-full object-cover object-center"
+          />
+        ) : (
+          <Image
+            src="/images/jib-logo.png"
+            alt="Jib.im's logo"
             width={32}
             height={32}
             className="rounded-full object-cover object-center"

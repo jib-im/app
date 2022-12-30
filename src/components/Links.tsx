@@ -29,9 +29,9 @@ const Links = () => {
       <div className="flex items-center justify-between gap-x-2 rounded-lg bg-gray-800 px-4 py-6 transition-all hover:bg-gray-700/50">
         <div className="">
           <div className="flex items-center gap-x-2 text-gray-300">
-            <Link href="https://slash.ly/github">
+            <Link href="https://jib.im/github">
               <h4 className="text-sm text-blue-500 sm:text-base">
-                slash.ly/github
+                jib.im/github
               </h4>
             </Link>
             <div className="hidden cursor-pointer rounded-full bg-gray-700 p-2 transition-all hover:scale-110 hover:bg-gray-600 hover:text-blue-200 sm:block">
@@ -49,7 +49,7 @@ const Links = () => {
             </Link>
           </div>
           <p className="w-52 truncate text-xs text-gray-300 sm:w-96 sm:text-sm md:w-[28rem] lg:w-[32rem]">
-            https://github.com/slash-ly
+            https://github.com/jib-ly
           </p>
         </div>
         <div className="relative flex items-center gap-x-2 text-sm text-gray-400">
