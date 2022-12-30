@@ -10,7 +10,7 @@ import { NextAuthErrorMessage } from "../utils/NextAuthErrorMessage";
 import { useRouter } from "next/router";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import type { GetServerSideProps } from "next";
 
 export default function Login() {
   const router = useRouter();
