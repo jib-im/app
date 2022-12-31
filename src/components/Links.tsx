@@ -87,7 +87,7 @@ const Links = ({
             )}
           </div>
           {isLoading ? (
-            <div className="h-3 w-72 animate-pulse bg-gray-700" />
+            <div className="h-3 w-44 animate-pulse bg-gray-700 sm:w-72" />
           ) : (
             <p className="w-52 truncate text-xs text-gray-300 sm:w-96 sm:text-sm md:w-[28rem] lg:w-[32rem]">
               {link?.url}
