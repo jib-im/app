@@ -7,6 +7,7 @@ import Balancer from "react-wrap-balancer";
 import { trpc } from "../utils/trpc";
 import { type inferRouterOutputs } from "@trpc/server";
 import { type AppRouter } from "../server/trpc/router/_app";
+import { useFetchLinks } from "../hooks/useFetchLinks";
 
 export type ModalType =
   | { type: "add" }
@@ -29,6 +30,7 @@ const LinkModal = ({
   closeModal: () => void;
   modalType: ModalType;
 }) => {
+  const { refetch } = useFetchLinks();
   const [link, setLink] = useState<
     inferRouterOutputs<AppRouter>["link"]["getLinks"][0] | undefined
   >();
@@ -164,6 +166,7 @@ const LinkModal = ({
                               url: createLink.destinationLink,
                             });
                             closeModal();
+                            refetch();
                           }}
                         >
                           <label htmlFor="destination-link" className="text-sm">

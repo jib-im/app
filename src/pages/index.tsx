@@ -1,10 +1,11 @@
 import HomeStatusBar from "../components/HomeStatusBar";
-import { trpc } from "../utils/trpc";
+// import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import LinkComponent from "../components/Links";
+import { useFetchLinks } from "../hooks/useFetchLinks";
 
 export default function Dashboard() {
-  const { data, isLoading, refetch } = trpc.link.getLinks.useQuery();
+  const { data, isLoading } = useFetchLinks();
 
   return (
     <section className="mx-auto min-h-[38rem] max-w-screen-lg p-4">
@@ -31,11 +32,7 @@ export default function Dashboard() {
           <>
             <HomeStatusBar />
             {data.map((link) => (
-              <LinkComponent
-                key={link.shortUrl}
-                link={link}
-                refetch={refetch}
-              />
+              <LinkComponent key={link.shortUrl} link={link} />
             ))}
           </>
         )}

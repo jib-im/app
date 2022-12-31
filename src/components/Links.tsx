@@ -16,21 +16,21 @@ import { useModal } from "../hooks/useModal";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "../server/trpc/router/_app";
 import Moment from "react-moment";
+import { useFetchLinks } from "../hooks/useFetchLinks";
 
 const LinkComponent = ({
   link,
   isLoading,
-  refetch,
 }: {
   link?: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
   isLoading?: boolean;
-  refetch?: () => void;
 }) => {
+  const { refetch } = useFetchLinks();
   const { isOpen, closeModal, openModal } = useModal();
   const [modalType, setModalType] = useState<ModalType>({ type: "add" });
 
   useEffect(() => {
-    if (!isOpen && refetch) refetch();
+    if (!isOpen) refetch();
   }, [isOpen]);
 
   return (
