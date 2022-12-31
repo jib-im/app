@@ -34,14 +34,18 @@ const LinkModal = ({
   const [link, setLink] = useState<
     inferRouterOutputs<AppRouter>["link"]["getLinks"][0] | undefined
   >();
-  const [createLink, setCreateLink] = useState({
-    destinationLink: "",
-    shortLink: "",
+  const [linkState, setLinkState] = useState<{
+    destinationLink: string;
+    shortLink: string;
+    shortUrlError?: string;
+  }>({
+    destinationLink: link?.url || "",
+    shortLink: link?.shortUrl || "",
   });
 
   useEffect(() => {
     if (isOpen)
-      setCreateLink({
+      setLinkState({
         destinationLink: "",
         shortLink: "",
       });
@@ -52,27 +56,69 @@ const LinkModal = ({
   }, [modalType.type]);
 
   const createLinkMutation = trpc.link.createLink.useMutation();
-  const verifyShortUrlQuery = trpc.link.verifyShortUrl.useQuery({
-    shortUrl: createLink.shortLink,
-  });
-  const deleteLinkMutation = trpc.link.deleteLink.useMutation();
+  const updateLinkMutation = trpc.link.updateLink.useMutation();
+  const removeLinkMutation = trpc.link.removeLink.useMutation();
+  const archiveLinkMutation = trpc.link.archiveLink.useMutation();
+  const verifyShortUrlMutation = trpc.link.verifyShortUrl.useMutation();
 
-  const generateRandomLink = () => {
+  // useEffect(() => {
+  //   const timeOutId = setTimeout(async () => {
+  //     if (
+  //       await verifyShortUrlMutation.mutateAsync({
+  //         shortUrl: linkState.shortLink,
+  //       })
+  //     ) {
+  //       setLinkState({
+  //         ...linkState,
+  //         shortUrlError: "This short link is already taken",
+  //       });
+  //     }
+  //   }, 500);
+  //   setLinkState({
+  //     ...linkState,
+  //     shortUrlError: undefined,
+  //   });
+  //   return () => {
+  //     clearTimeout(timeOutId);
+  //   };
+  // }, [linkState.shortLink]);
+  const RandomizeButton = () => {
+    return (
+      <button
+        className={`flex items-center gap-x-2 p-1 ${
+          verifyShortUrlMutation.isLoading
+            ? "text-gray-600"
+            : "text-gray-500 hover:text-gray-400"
+        }`}
+        type="button"
+        onClick={() => {
+          generateRandomLink();
+        }}
+        disabled={verifyShortUrlMutation.isLoading}
+      >
+        <FaRandom />
+        {verifyShortUrlMutation.isLoading ? "Loading..." : "Randomize"}
+      </button>
+    );
+  };
+
+  const generateRandomLink = async () => {
     const randomLink = generator.generate({
       length: 6,
       numbers: true,
-      lowercase: true,
       uppercase: true,
+      symbols: false,
     });
+    await verifyShortUrlMutation.mutateAsync({ shortUrl: randomLink });
 
-    if (verifyShortUrlQuery.data) {
+    if (!verifyShortUrlMutation.data) {
+      setLinkState({
+        ...linkState,
+        shortLink: randomLink,
+      });
+    } else {
       generateRandomLink();
     }
-
-    setCreateLink({
-      ...createLink,
-      shortLink: randomLink,
-    });
   };
 
   return (
@@ -162,11 +208,11 @@ const LinkModal = ({
                           onSubmit={async (e) => {
                             e.preventDefault();
                             await createLinkMutation.mutateAsync({
-                              shortUrl: createLink.shortLink,
-                              url: createLink.destinationLink,
+                              shortUrl: linkState.shortLink,
+                              url: linkState.destinationLink,
                             });
-                            closeModal();
                             refetch();
+                            closeModal();
                           }}
                         >
                           <label htmlFor="destination-link" className="text-sm">
@@ -174,10 +220,10 @@ const LinkModal = ({
                               Destination Link
                             </span>
                             <input
-                              value={createLink.destinationLink}
+                              value={linkState.destinationLink}
                               onChange={(e) =>
-                                setCreateLink({
-                                  ...createLink,
+                                setLinkState({
+                                  ...linkState,
                                   destinationLink: e.target.value,
                                 })
                               }
@@ -193,29 +239,17 @@ const LinkModal = ({
                           <label htmlFor="short-link" className="text-sm">
                             <div className="flex items-center justify-between">
                               <span className="text-gray-400">Short Link</span>
-                              <button
-                                className="flex items-center gap-x-2 p-1 text-gray-500 hover:text-gray-400"
-                                type="button"
-                                onClick={() => {
-                                  generateRandomLink();
-                                }}
-                                disabled={verifyShortUrlQuery.isLoading}
-                              >
-                                <FaRandom />
-                                {verifyShortUrlQuery.isLoading
-                                  ? "Loading..."
-                                  : "Randomize"}
-                              </button>
+                              <RandomizeButton />
                             </div>
                             <div className="flex">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-gray-600 px-3 text-sm text-gray-300">
                                 jib.im
                               </span>
                               <input
-                                value={createLink.shortLink}
+                                value={linkState.shortLink}
                                 onChange={(e) =>
-                                  setCreateLink({
-                                    ...createLink,
+                                  setLinkState({
+                                    ...linkState,
                                     shortLink: e.target.value,
                                   })
                                 }
@@ -225,9 +259,18 @@ const LinkModal = ({
                                 id="short-link"
                                 name="short-link"
                                 placeholder="github"
-                                className="block w-full min-w-0 flex-1 rounded-none rounded-r-lg border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
+                                className={`block w-full min-w-0 flex-1 rounded-none rounded-r-lg border bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50 ${
+                                  linkState.shortUrlError
+                                    ? "border-red-500"
+                                    : "border-gray-500"
+                                }`}
                               />
                             </div>
+                            {linkState.shortUrlError && (
+                              <p className="text-red-500">
+                                {linkState.shortUrlError}
+                              </p>
+                            )}
                           </label>
                           <button
                             disabled={createLinkMutation.isLoading}
@@ -244,8 +287,15 @@ const LinkModal = ({
                       return (
                         <form
                           className="flex flex-col gap-y-4 px-4 py-6 sm:px-8"
-                          onSubmit={(e) => {
+                          onSubmit={async (e) => {
                             e.preventDefault();
+                            await updateLinkMutation.mutateAsync({
+                              shortUrl: linkState.shortLink,
+                              url: linkState.destinationLink,
+                              id: modalType.link.id,
+                            });
+                            refetch();
+                            closeModal();
                           }}
                         >
                           <label htmlFor="destination-link" className="text-sm">
@@ -253,10 +303,10 @@ const LinkModal = ({
                               Destination Link
                             </span>
                             <input
-                              value={createLink.destinationLink}
+                              value={linkState.destinationLink}
                               onChange={(e) =>
-                                setCreateLink({
-                                  ...createLink,
+                                setLinkState({
+                                  ...linkState,
                                   destinationLink: e.target.value,
                                 })
                               }
@@ -271,33 +321,17 @@ const LinkModal = ({
                           <label htmlFor="short-link" className="text-sm">
                             <div className="flex items-center justify-between">
                               <span className="text-gray-400">Short Link</span>
-                              <button
-                                className="flex items-center gap-x-2 p-1 text-gray-500 hover:text-gray-400"
-                                type="button"
-                                onClick={() => {
-                                  generateRandomLink();
-                                }}
-                                // disabled={
-                                //   createLink.loadingShortUrlVerification
-                                // }
-                              >
-                                <FaRandom />
-                                {/* {createLink.loadingShortUrlVerification
-                                  ? "Loading..."
-                                  : */}
-                                Randomize
-                                {/* } */}
-                              </button>
+                              <RandomizeButton />
                             </div>
                             <div className="flex">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-gray-600 px-3 text-sm text-gray-300">
                                 jib.im
                               </span>
                               <input
-                                value={createLink.shortLink}
+                                value={linkState.shortLink}
                                 onChange={(e) =>
-                                  setCreateLink({
-                                    ...createLink,
+                                  setLinkState({
+                                    ...linkState,
                                     shortLink: e.target.value,
                                   })
                                 }
@@ -322,15 +356,23 @@ const LinkModal = ({
                       return (
                         <form
                           className="flex flex-col gap-y-4 px-4 py-6 sm:px-8"
-                          onSubmit={(e) => {
+                          onSubmit={async (e) => {
                             e.preventDefault();
+                            await archiveLinkMutation.mutateAsync({
+                              id: modalType.link.id,
+                            });
+                            refetch();
+                            closeModal();
                           }}
                         >
                           <button
+                            disabled={archiveLinkMutation.isLoading}
                             type="submit"
                             className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300"
                           >
-                            Confirm archive
+                            {archiveLinkMutation.isLoading
+                              ? "Loading..."
+                              : "Confirm archive"}
                           </button>
                         </form>
                       );
@@ -340,9 +382,10 @@ const LinkModal = ({
                           className="flex flex-col gap-y-4 px-4 py-6 sm:px-8"
                           onSubmit={async (e) => {
                             e.preventDefault();
-                            await deleteLinkMutation.mutateAsync({
+                            await removeLinkMutation.mutateAsync({
                               id: modalType.link.id,
                             });
+                            refetch();
                             closeModal();
                           }}
                         >
@@ -366,11 +409,11 @@ const LinkModal = ({
                             />
                           </label>
                           <button
-                            disabled={deleteLinkMutation.isLoading}
+                            disabled={removeLinkMutation.isLoading}
                             type="submit"
                             className="rounded-md border border-transparent bg-red-900 px-4 py-2 text-sm text-white transition-colors hover:border-red-900 hover:bg-transparent hover:text-red-500"
                           >
-                            {deleteLinkMutation.isLoading
+                            {removeLinkMutation.isLoading
                               ? "Loading..."
                               : "Confirm delete"}
                           </button>

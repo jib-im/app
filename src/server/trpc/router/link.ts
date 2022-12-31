@@ -1,4 +1,6 @@
+import { trpc } from "./../../../utils/trpc";
 import { z } from "zod";
+import generator from "generate-password";
 
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
@@ -8,7 +10,7 @@ export const linkRouter = router({
       where: { userId: ctx.session.user.id },
     });
   }),
-  deleteLink: protectedProcedure
+  removeLink: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.link.delete({
@@ -29,16 +31,7 @@ export const linkRouter = router({
         },
       });
     }),
-  verifyShortUrl: protectedProcedure
-    .input(z.object({ shortUrl: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.prisma.link.findFirst({
-        where: {
-          shortUrl: input.shortUrl,
-          userId: ctx.session.user.id,
-        },
-      });
-    }),
+
   createLink: protectedProcedure
     .input(z.object({ url: z.string(), shortUrl: z.string() }))
     .mutation(({ ctx, input }) => {
@@ -47,6 +40,35 @@ export const linkRouter = router({
           url: input.url,
           shortUrl: input.shortUrl,
           userId: ctx.session.user.id,
+        },
+      });
+    }),
+  updateLink: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        shortUrl: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.link.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          url: input.url,
+          shortUrl: input.shortUrl,
+        },
+      });
+    }),
+
+  verifyShortUrl: protectedProcedure
+    .input(z.object({ shortUrl: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.link.findUnique({
+        where: {
+          shortUrl: input.shortUrl,
         },
       });
     }),
