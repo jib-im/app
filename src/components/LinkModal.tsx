@@ -43,7 +43,6 @@ const LinkModal = ({
         >
           <div className="fixed inset-0 bg-black bg-opacity-50" />
         </Transition.Child>
-
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center">
             <Transition.Child

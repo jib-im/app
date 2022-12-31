@@ -19,8 +19,10 @@ import Moment from "react-moment";
 
 const Links = ({
   link,
+  isLoading,
 }: {
-  link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+  link?: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+  isLoading?: boolean;
 }) => {
   const { isOpen, closeModal, openModal } = useModal();
   const [modalType, setModalType] = useState<ModalType>({ type: "add" });
@@ -33,42 +35,79 @@ const Links = ({
         modalType={modalType}
       />
       <div className="flex items-center justify-between gap-x-2 rounded-lg bg-gray-800 px-4 py-6 transition-all hover:bg-gray-700/50">
-        <div className="">
+        <div className="space-y-1">
           <div className="flex items-center gap-x-2 text-gray-300">
-            <Link href={`https://jib.im/${link.shortUrl}`} target="_blank">
-              <h4 className="text-sm text-blue-500 sm:text-base">
-                jib.im/{link.shortUrl}
-              </h4>
-            </Link>
-            <div className="hidden cursor-pointer rounded-full bg-gray-700 p-2 transition-all hover:scale-110 hover:bg-gray-600 hover:text-blue-200 sm:block">
-              <FaRegCopy className="h-3 w-3 " />
-            </div>
-            <div className="hidden cursor-pointer rounded-full bg-gray-700 p-2 transition-all hover:scale-110 hover:bg-gray-600 hover:text-blue-200 sm:block">
-              <FaQrcode className="h-3 w-3" />
-            </div>
-            <Link
-              href={`/links/${link.shortUrl}`}
-              className="flex items-center gap-x-2 rounded-md bg-gray-700 px-2 py-1 transition-all hover:scale-105 hover:bg-gray-600 hover:text-blue-200"
+            {isLoading ? (
+              <div className="h-5 w-32 animate-pulse bg-gray-700" />
+            ) : (
+              <Link href={`https://jib.im/${link?.shortUrl}`} target="_blank">
+                <h4 className="text-sm text-blue-500 sm:text-base">
+                  jib.im/{link?.shortUrl}
+                </h4>
+              </Link>
+            )}
+            <button
+              className={`hidden cursor-pointer rounded-full bg-gray-700 p-2 transition-all sm:block ${
+                isLoading
+                  ? "animate-pulse cursor-default"
+                  : "hover:scale-110 hover:bg-gray-600 hover:text-blue-200"
+              }`}
+              disabled={isLoading}
             >
-              <FaRegChartBar className="h-3 w-3" />
-              <p className="truncate text-xs">
-                {link.clicks < 2
-                  ? `${link.clicks} click`
-                  : `${link.clicks} clicks`}
-              </p>
-            </Link>
+              <FaRegCopy className={`h-3 w-3${isLoading && " opacity-0"}`} />
+            </button>
+            <button
+              className={`hidden cursor-pointer rounded-full bg-gray-700 p-2 transition-all sm:block ${
+                isLoading
+                  ? "animate-pulse cursor-default"
+                  : "hover:scale-110 hover:bg-gray-600 hover:text-blue-200"
+              }`}
+              disabled={isLoading}
+            >
+              <FaQrcode className={`h-3 w-3${isLoading && " opacity-0"}`} />
+            </button>
+            {isLoading ? (
+              <div className="h-5 w-16 animate-pulse rounded-md bg-gray-700 sm:w-24" />
+            ) : (
+              <Link
+                href={`/links/${link?.shortUrl}`}
+                className="flex items-center gap-x-2 rounded-md bg-gray-700 px-2 py-1 transition-all hover:scale-105 hover:bg-gray-600 hover:text-blue-200"
+              >
+                <FaRegChartBar className="h-3 w-3" />
+                <p className="truncate text-xs">
+                  {link && link.clicks < 2
+                    ? `${link?.clicks} click`
+                    : `${link?.clicks} clicks`}
+                </p>
+              </Link>
+            )}
           </div>
-          <p className="w-52 truncate text-xs text-gray-300 sm:w-96 sm:text-sm md:w-[28rem] lg:w-[32rem]">
-            {link.url}
-          </p>
+          {isLoading ? (
+            <div className="h-4 w-28 animate-pulse bg-gray-700" />
+          ) : (
+            <p className="w-52 truncate text-xs text-gray-300 sm:w-96 sm:text-sm md:w-[28rem] lg:w-[32rem]">
+              {link?.url}
+            </p>
+          )}
         </div>
         <div className="relative flex items-center gap-x-2 text-sm text-gray-400">
-          <p className="hidden text-sm leading-none sm:block">
-            <Moment fromNow>{link.createdAt}</Moment>
-          </p>
+          {isLoading ? (
+            <div className="hidden h-5 w-28 animate-pulse bg-gray-700 sm:block" />
+          ) : (
+            <p className="hidden text-sm leading-none sm:block">
+              <Moment fromNow>{link?.createdAt}</Moment>
+            </p>
+          )}
           <Menu>
-            <Menu.Button className="rounded-md px-1.5 py-2 transition-colors hover:bg-gray-500/25">
-              <FaEllipsisV />
+            <Menu.Button
+              className={`rounded-md px-1.5 py-2 transition-colors ${
+                isLoading
+                  ? "animate-pulse bg-gray-500/25"
+                  : "hover:bg-gray-500/25"
+              }`}
+              disabled={isLoading}
+            >
+              <FaEllipsisV className={isLoading ? "opacity-0" : ""} />
             </Menu.Button>
 
             <Transition
