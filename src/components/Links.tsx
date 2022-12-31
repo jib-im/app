@@ -35,10 +35,10 @@ const Links = ({
         modalType={modalType}
       />
       <div className="flex items-center justify-between gap-x-2 rounded-lg bg-gray-800 px-4 py-6 transition-all hover:bg-gray-700/50">
-        <div className="space-y-1">
+        <div className={`${isLoading ? "space-y-2" : ""}`}>
           <div className="flex items-center gap-x-2 text-gray-300">
             {isLoading ? (
-              <div className="h-5 w-32 animate-pulse bg-gray-700" />
+              <div className="h-4 w-24 animate-pulse bg-gray-700" />
             ) : (
               <Link href={`https://jib.im/${link?.shortUrl}`} target="_blank">
                 <h4 className="text-sm text-blue-500 sm:text-base">
@@ -83,7 +83,7 @@ const Links = ({
             )}
           </div>
           {isLoading ? (
-            <div className="h-4 w-28 animate-pulse bg-gray-700" />
+            <div className="h-3 w-72 animate-pulse bg-gray-700" />
           ) : (
             <p className="w-52 truncate text-xs text-gray-300 sm:w-96 sm:text-sm md:w-[28rem] lg:w-[32rem]">
               {link?.url}
@@ -92,7 +92,7 @@ const Links = ({
         </div>
         <div className="relative flex items-center gap-x-2 text-sm text-gray-400">
           {isLoading ? (
-            <div className="hidden h-5 w-28 animate-pulse bg-gray-700 sm:block" />
+            <div className="hidden h-4 w-28 animate-pulse bg-gray-700 sm:block" />
           ) : (
             <p className="hidden text-sm leading-none sm:block">
               <Moment fromNow>{link?.createdAt}</Moment>

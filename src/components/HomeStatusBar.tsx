@@ -3,21 +3,39 @@ import { Fragment } from "react";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
 import { STATUS_BAR } from "../contants/contants";
 
-const HomeStatusBar = () => {
+const HomeStatusBar = ({ loading }: { loading?: boolean }) => {
   return (
-    <div className="flex items-center gap-x-4">
+    <div className="ml-auto flex items-center gap-x-4">
       {STATUS_BAR.map((menuItem) => (
         <Menu
           as="div"
           className="-sm relative inline-block text-left"
           key={menuItem.title}
         >
-          <Menu.Button className="flex w-full items-center justify-between gap-x-2 rounded-md border border-gray-700/50 px-4 py-2 text-xs shadow transition-colors hover:bg-gray-800 sm:w-40 sm:text-sm">
+          <Menu.Button
+            disabled={loading}
+            className={`flex w-full items-center justify-between gap-x-2 rounded-md border border-gray-700/50 px-4 py-2 text-xs shadow transition-colors sm:w-40 sm:text-sm ${
+              loading ? "animate-pulse" : "hover:bg-gray-800"
+            }`}
+          >
             <div className="flex items-center gap-x-2">
-              {menuItem.icon}
-              {menuItem.title}
+              {loading ? (
+                <>
+                  <div className="h-4 w-4 rounded-full bg-gray-700 sm:h-5 sm:w-5" />
+                  <div className="h-4 w-9 bg-gray-700 p-2 sm:w-12" />
+                </>
+              ) : (
+                <>
+                  {menuItem.icon}
+                  {menuItem.title}
+                </>
+              )}
             </div>
-            <FaChevronDown aria-hidden="true" />
+            {loading ? (
+              <div className="h-4 w-4 rounded-full bg-gray-700 sm:h-5 sm:w-5" />
+            ) : (
+              <FaChevronDown aria-hidden="true" />
+            )}
           </Menu.Button>
 
           <Transition
