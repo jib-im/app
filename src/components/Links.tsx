@@ -8,7 +8,7 @@ import {
   FaRegTrashAlt,
 } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import Link from "next/link";
 import LinkModal from "./LinkModal";
 import type { ModalType } from "./LinkModal";
@@ -17,15 +17,21 @@ import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "../server/trpc/router/_app";
 import Moment from "react-moment";
 
-const Links = ({
+const LinkComponent = ({
   link,
   isLoading,
+  refetch,
 }: {
   link?: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
   isLoading?: boolean;
+  refetch?: () => void;
 }) => {
   const { isOpen, closeModal, openModal } = useModal();
   const [modalType, setModalType] = useState<ModalType>({ type: "add" });
+
+  useEffect(() => {
+    if (!isOpen && refetch) refetch();
+  }, [isOpen]);
 
   return (
     <>
@@ -140,26 +146,27 @@ const Links = ({
                           : "text-gray-300 hover:bg-gray-700"
                       }`}
                       onClick={() => {
-                        switch (item.title) {
-                          case "Edit":
-                            setModalType({
-                              type: "edit",
-                              link: { shortUrl: "github" },
-                            });
-                            break;
-                          case "Archive":
-                            setModalType({
-                              type: "archive",
-                              link: { shortUrl: "github" },
-                            });
-                            break;
-                          case "Delete":
-                            setModalType({
-                              type: "delete",
-                              link: { shortUrl: "github" },
-                            });
-                            break;
-                        }
+                        if (link)
+                          switch (item.title) {
+                            case "Edit":
+                              setModalType({
+                                type: "edit",
+                                link,
+                              });
+                              break;
+                            case "Archive":
+                              setModalType({
+                                type: "archive",
+                                link,
+                              });
+                              break;
+                            case "Delete":
+                              setModalType({
+                                type: "delete",
+                                link,
+                              });
+                              break;
+                          }
                         openModal();
                       }}
                     >
@@ -179,4 +186,4 @@ const Links = ({
   );
 };
 
-export default Links;
+export default LinkComponent;

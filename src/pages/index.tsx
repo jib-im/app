@@ -1,10 +1,10 @@
-import Links from "../components/Links";
 import HomeStatusBar from "../components/HomeStatusBar";
 import { trpc } from "../utils/trpc";
 import Image from "next/image";
+import LinkComponent from "../components/Links";
 
 export default function Dashboard() {
-  const { data, isLoading } = trpc.link.getLinks.useQuery();
+  const { data, isLoading, refetch } = trpc.link.getLinks.useQuery();
 
   return (
     <section className="mx-auto min-h-[38rem] max-w-screen-lg p-4">
@@ -13,7 +13,7 @@ export default function Dashboard() {
           <>
             <HomeStatusBar loading />
             {[...Array(3)].map((index) => (
-              <Links key={index} isLoading={isLoading} />
+              <LinkComponent key={index} isLoading={isLoading} />
             ))}
           </>
         ) : !data || !data.length ? (
@@ -31,7 +31,11 @@ export default function Dashboard() {
           <>
             <HomeStatusBar />
             {data.map((link) => (
-              <Links key={link.shortUrl} link={link} />
+              <LinkComponent
+                key={link.shortUrl}
+                link={link}
+                refetch={refetch}
+              />
             ))}
           </>
         )}

@@ -4,12 +4,21 @@ import { Fragment, useState, useEffect } from "react";
 import { FaRandom, FaTimes } from "react-icons/fa";
 import generator from "generate-password";
 import Balancer from "react-wrap-balancer";
+import { trpc } from "../utils/trpc";
+import { type inferRouterOutputs } from "@trpc/server";
+import { type AppRouter } from "../server/trpc/router/_app";
 
 export type ModalType =
   | { type: "add" }
-  | { type: "delete"; link: { shortUrl: string } }
-  | { type: "edit"; link: { shortUrl: string } }
-  | { type: "archive"; link: { shortUrl: string } };
+  | {
+      type: "delete";
+      link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+    }
+  | { type: "edit"; link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0] }
+  | {
+      type: "archive";
+      link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+    };
 
 const LinkModal = ({
   isOpen,
@@ -20,13 +29,48 @@ const LinkModal = ({
   closeModal: () => void;
   modalType: ModalType;
 }) => {
-  const [state, setState] = useState({ destinationLink: "", shortLink: "" });
+  const [link, setLink] = useState<
+    inferRouterOutputs<AppRouter>["link"]["getLinks"][0] | undefined
+  >();
+  const [createLink, setCreateLink] = useState({
+    destinationLink: "",
+    shortLink: "",
+  });
+
   useEffect(() => {
-    if (isOpen) clearState();
+    if (isOpen)
+      setCreateLink({
+        destinationLink: "",
+        shortLink: "",
+      });
   }, [isOpen]);
 
-  const clearState = () => {
-    setState({ destinationLink: "", shortLink: "" });
+  useEffect(() => {
+    if (modalType.type !== "add") setLink(modalType.link);
+  }, [modalType.type]);
+
+  const createLinkMutation = trpc.link.createLink.useMutation();
+  const verifyShortUrlQuery = trpc.link.verifyShortUrl.useQuery({
+    shortUrl: createLink.shortLink,
+  });
+  const deleteLinkMutation = trpc.link.deleteLink.useMutation();
+
+  const generateRandomLink = () => {
+    const randomLink = generator.generate({
+      length: 6,
+      numbers: true,
+      lowercase: true,
+      uppercase: true,
+    });
+
+    if (verifyShortUrlQuery.data) {
+      generateRandomLink();
+    }
+
+    setCreateLink({
+      ...createLink,
+      shortLink: randomLink,
+    });
   };
 
   return (
@@ -113,8 +157,13 @@ const LinkModal = ({
                       return (
                         <form
                           className="flex flex-col gap-y-4 px-4 py-6 sm:px-8"
-                          onSubmit={(e) => {
+                          onSubmit={async (e) => {
                             e.preventDefault();
+                            await createLinkMutation.mutateAsync({
+                              shortUrl: createLink.shortLink,
+                              url: createLink.destinationLink,
+                            });
+                            closeModal();
                           }}
                         >
                           <label htmlFor="destination-link" className="text-sm">
@@ -122,13 +171,14 @@ const LinkModal = ({
                               Destination Link
                             </span>
                             <input
-                              value={state.destinationLink}
+                              value={createLink.destinationLink}
                               onChange={(e) =>
-                                setState({
-                                  ...state,
+                                setCreateLink({
+                                  ...createLink,
                                   destinationLink: e.target.value,
                                 })
                               }
+                              disabled={createLinkMutation.isLoading}
                               required
                               type="url"
                               name="destination-link"
@@ -144,20 +194,14 @@ const LinkModal = ({
                                 className="flex items-center gap-x-2 p-1 text-gray-500 hover:text-gray-400"
                                 type="button"
                                 onClick={() => {
-                                  // TODO: Query to DB to check if the random link is already taken
-                                  setState({
-                                    ...state,
-                                    shortLink: generator.generate({
-                                      length: 6,
-                                      numbers: true,
-                                      lowercase: true,
-                                      uppercase: true,
-                                    }),
-                                  });
+                                  generateRandomLink();
                                 }}
+                                disabled={verifyShortUrlQuery.isLoading}
                               >
                                 <FaRandom />
-                                Randomize
+                                {verifyShortUrlQuery.isLoading
+                                  ? "Loading..."
+                                  : "Randomize"}
                               </button>
                             </div>
                             <div className="flex">
@@ -165,13 +209,14 @@ const LinkModal = ({
                                 jib.im
                               </span>
                               <input
-                                value={state.shortLink}
+                                value={createLink.shortLink}
                                 onChange={(e) =>
-                                  setState({
-                                    ...state,
+                                  setCreateLink({
+                                    ...createLink,
                                     shortLink: e.target.value,
                                   })
                                 }
+                                disabled={createLinkMutation.isLoading}
                                 required
                                 type="text"
                                 id="short-link"
@@ -182,10 +227,13 @@ const LinkModal = ({
                             </div>
                           </label>
                           <button
+                            disabled={createLinkMutation.isLoading}
                             type="submit"
                             className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300"
                           >
-                            Add link
+                            {createLinkMutation.isLoading
+                              ? "Loading..."
+                              : "Add link"}
                           </button>
                         </form>
                       );
@@ -202,10 +250,10 @@ const LinkModal = ({
                               Destination Link
                             </span>
                             <input
-                              value={state.destinationLink}
+                              value={createLink.destinationLink}
                               onChange={(e) =>
-                                setState({
-                                  ...state,
+                                setCreateLink({
+                                  ...createLink,
                                   destinationLink: e.target.value,
                                 })
                               }
@@ -224,20 +272,18 @@ const LinkModal = ({
                                 className="flex items-center gap-x-2 p-1 text-gray-500 hover:text-gray-400"
                                 type="button"
                                 onClick={() => {
-                                  // TODO: Query to DB to check if the random link is already taken
-                                  setState({
-                                    ...state,
-                                    shortLink: generator.generate({
-                                      length: 6,
-                                      numbers: true,
-                                      lowercase: true,
-                                      uppercase: true,
-                                    }),
-                                  });
+                                  generateRandomLink();
                                 }}
+                                // disabled={
+                                //   createLink.loadingShortUrlVerification
+                                // }
                               >
                                 <FaRandom />
+                                {/* {createLink.loadingShortUrlVerification
+                                  ? "Loading..."
+                                  : */}
                                 Randomize
+                                {/* } */}
                               </button>
                             </div>
                             <div className="flex">
@@ -245,10 +291,10 @@ const LinkModal = ({
                                 jib.im
                               </span>
                               <input
-                                value={state.shortLink}
+                                value={createLink.shortLink}
                                 onChange={(e) =>
-                                  setState({
-                                    ...state,
+                                  setCreateLink({
+                                    ...createLink,
                                     shortLink: e.target.value,
                                   })
                                 }
@@ -289,8 +335,12 @@ const LinkModal = ({
                       return (
                         <form
                           className="flex flex-col gap-y-4 px-4 py-6 sm:px-8"
-                          onSubmit={(e) => {
+                          onSubmit={async (e) => {
                             e.preventDefault();
+                            await deleteLinkMutation.mutateAsync({
+                              id: modalType.link.id,
+                            });
+                            closeModal();
                           }}
                         >
                           <label
@@ -313,10 +363,13 @@ const LinkModal = ({
                             />
                           </label>
                           <button
+                            disabled={deleteLinkMutation.isLoading}
                             type="submit"
                             className="rounded-md border border-transparent bg-red-900 px-4 py-2 text-sm text-white transition-colors hover:border-red-900 hover:bg-transparent hover:text-red-500"
                           >
-                            Confirm delete
+                            {deleteLinkMutation.isLoading
+                              ? "Loading..."
+                              : "Confirm delete"}
                           </button>
                         </form>
                       );
