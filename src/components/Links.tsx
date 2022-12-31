@@ -34,8 +34,12 @@ const Links = ({
         closeModal={closeModal}
         modalType={modalType}
       />
-      <div className="flex items-center justify-between gap-x-2 rounded-lg bg-gray-800 px-4 py-6 transition-all hover:bg-gray-700/50">
-        <div className={`${isLoading ? "space-y-2" : ""}`}>
+      <div
+        className={`relative flex items-center justify-between gap-x-2 rounded-lg bg-gray-800 px-4 py-6 transition-all ${
+          isLoading ? "bg-transparent" : "hover:bg-gray-700/50"
+        }`}
+      >
+        <div className={`${isLoading && "space-y-2"}`}>
           <div className="flex items-center gap-x-2 text-gray-300">
             {isLoading ? (
               <div className="h-4 w-24 animate-pulse bg-gray-700" />
@@ -167,6 +171,9 @@ const Links = ({
             </Transition>
           </Menu>
         </div>
+        {isLoading && (
+          <div className="absolute left-0 right-0 top-0 bottom-0 -z-10 h-full w-full animate-pulse rounded-lg bg-gray-800" />
+        )}
       </div>
     </>
   );

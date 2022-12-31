@@ -7,7 +7,7 @@ export default function Dashboard() {
   const { data, isLoading } = trpc.link.getLinks.useQuery();
 
   return (
-    <section className="mx-auto min-h-[32rem] max-w-screen-lg p-4">
+    <section className="mx-auto min-h-[38rem] max-w-screen-lg p-4">
       <div className="flex w-full flex-col gap-y-4">
         {isLoading ? (
           <>
