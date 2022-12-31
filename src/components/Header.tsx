@@ -70,7 +70,7 @@ const Header = ({ session }: { session: Session | null }) => {
               <Menu.Items className="absolute right-0 mt-1 w-44 origin-top-right rounded-md bg-gray-800 p-2 shadow-lg">
                 <Menu.Item>
                   <button
-                    onClick={() => signOut()}
+                    onClick={() => signOut({ callbackUrl: "/login" })}
                     className="flex w-full items-center gap-x-2 rounded-md px-2 py-2 text-sm text-gray-50 hover:bg-gray-700"
                   >
                     <FaSignOutAlt />

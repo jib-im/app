@@ -30,17 +30,21 @@ const LinkModal = ({
   closeModal: () => void;
   modalType: ModalType;
 }) => {
+  const createLinkMutation = trpc.link.createLink.useMutation();
+  const updateLinkMutation = trpc.link.updateLink.useMutation();
+  const removeLinkMutation = trpc.link.removeLink.useMutation();
+  const archiveLinkMutation = trpc.link.archiveLink.useMutation();
+  const verifyShortUrlMutation = trpc.link.verifyShortUrl.useMutation();
+
   const { refetch } = useFetchLinks();
-  const [link, setLink] = useState<
-    inferRouterOutputs<AppRouter>["link"]["getLinks"][0] | undefined
-  >();
+
   const [linkState, setLinkState] = useState<{
     destinationLink: string;
     shortLink: string;
     shortUrlError?: string;
   }>({
-    destinationLink: link?.url || "",
-    shortLink: link?.shortUrl || "",
+    destinationLink: "",
+    shortLink: "",
   });
 
   useEffect(() => {
@@ -52,36 +56,36 @@ const LinkModal = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (modalType.type !== "add") setLink(modalType.link);
-  }, [modalType.type]);
+    if (modalType.type !== "add") {
+      setLinkState({
+        destinationLink: modalType.link.url,
+        shortLink: modalType.link.shortUrl,
+      });
+    }
+  }, [modalType.type, isOpen]);
 
-  const createLinkMutation = trpc.link.createLink.useMutation();
-  const updateLinkMutation = trpc.link.updateLink.useMutation();
-  const removeLinkMutation = trpc.link.removeLink.useMutation();
-  const archiveLinkMutation = trpc.link.archiveLink.useMutation();
-  const verifyShortUrlMutation = trpc.link.verifyShortUrl.useMutation();
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+      if (
+        await verifyShortUrlMutation.mutateAsync({
+          shortUrl: linkState.shortLink,
+        })
+      ) {
+        setLinkState({
+          ...linkState,
+          shortUrlError: "This short link is already taken",
+        });
+      }
+    }, 500);
+    setLinkState({
+      ...linkState,
+      shortUrlError: undefined,
+    });
+    return () => {
+      clearTimeout(timeOutId);
+    };
+  }, [linkState.shortLink]);
 
-  // useEffect(() => {
-  //   const timeOutId = setTimeout(async () => {
-  //     if (
-  //       await verifyShortUrlMutation.mutateAsync({
-  //         shortUrl: linkState.shortLink,
-  //       })
-  //     ) {
-  //       setLinkState({
-  //         ...linkState,
-  //         shortUrlError: "This short link is already taken",
-  //       });
-  //     }
-  //   }, 500);
-  //   setLinkState({
-  //     ...linkState,
-  //     shortUrlError: undefined,
-  //   });
-  //   return () => {
-  //     clearTimeout(timeOutId);
-  //   };
-  // }, [linkState.shortLink]);
   const RandomizeButton = () => {
     return (
       <button
@@ -109,9 +113,7 @@ const LinkModal = ({
       uppercase: true,
       symbols: false,
     });
-    await verifyShortUrlMutation.mutateAsync({ shortUrl: randomLink });
-
-    if (!verifyShortUrlMutation.data) {
+    if (!(await verifyShortUrlMutation.mutateAsync({ shortUrl: randomLink }))) {
       setLinkState({
         ...linkState,
         shortLink: randomLink,
@@ -243,7 +245,7 @@ const LinkModal = ({
                             </div>
                             <div className="flex">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-gray-600 px-3 text-sm text-gray-300">
-                                jib.im
+                                jib.im/
                               </span>
                               <input
                                 value={linkState.shortLink}
@@ -273,9 +275,12 @@ const LinkModal = ({
                             )}
                           </label>
                           <button
-                            disabled={createLinkMutation.isLoading}
+                            disabled={
+                              createLinkMutation.isLoading ||
+                              !!linkState.shortUrlError
+                            }
                             type="submit"
-                            className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300"
+                            className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300 disabled:cursor-not-allowed disabled:border-gray-700 disabled:bg-gray-700/50 disabled:text-gray-600"
                           >
                             {createLinkMutation.isLoading
                               ? "Loading..."
@@ -310,6 +315,7 @@ const LinkModal = ({
                                   destinationLink: e.target.value,
                                 })
                               }
+                              disabled={updateLinkMutation.isLoading}
                               required
                               type="url"
                               name="destination-link"
@@ -325,7 +331,7 @@ const LinkModal = ({
                             </div>
                             <div className="flex">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-600 bg-gray-600 px-3 text-sm text-gray-300">
-                                jib.im
+                                jib.im/
                               </span>
                               <input
                                 value={linkState.shortLink}
@@ -335,20 +341,36 @@ const LinkModal = ({
                                     shortLink: e.target.value,
                                   })
                                 }
+                                disabled={updateLinkMutation.isLoading}
                                 required
                                 type="text"
                                 id="short-link"
                                 name="short-link"
                                 placeholder="github"
-                                className="block w-full min-w-0 flex-1 rounded-none rounded-r-lg border border-gray-500 bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50"
+                                className={`block w-full min-w-0 flex-1 rounded-none rounded-r-lg border bg-transparent px-4 py-2 text-white outline-none focus:border-gray-50 ${
+                                  linkState.shortUrlError
+                                    ? "border-red-500"
+                                    : "border-gray-500"
+                                }`}
                               />
                             </div>
+                            {linkState.shortUrlError && (
+                              <p className="text-red-500">
+                                {linkState.shortUrlError}
+                              </p>
+                            )}
                           </label>
                           <button
+                            disabled={
+                              updateLinkMutation.isLoading ||
+                              !!linkState.shortUrlError
+                            }
                             type="submit"
-                            className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300"
+                            className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300 disabled:cursor-not-allowed disabled:border-gray-700 disabled:bg-gray-700/50 disabled:text-gray-600"
                           >
-                            Save changes
+                            {updateLinkMutation.isLoading
+                              ? "Loading..."
+                              : "Save changes"}
                           </button>
                         </form>
                       );
