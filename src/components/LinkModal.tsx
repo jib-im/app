@@ -5,8 +5,8 @@ import { FaRandom, FaTimes } from "react-icons/fa";
 import generator from "generate-password";
 import Balancer from "react-wrap-balancer";
 import { trpc } from "../utils/trpc";
-import { useFetchLinks } from "../hooks/useFetchLinks";
 import { type Link } from "@prisma/client";
+import { useFetchLinks } from "../hooks/useFetchLinks";
 
 export type ModalType =
   | { type: "add" }
@@ -35,7 +35,7 @@ const LinkModal = ({
   const archiveLinkMutation = trpc.link.archiveLink.useMutation();
   const verifyShortUrlMutation = trpc.link.verifyShortUrl.useMutation();
 
-  const { refetch } = useFetchLinks();
+  const { refetch } = useFetchLinks({});
 
   const [linkState, setLinkState] = useState<{
     destinationLink: string;

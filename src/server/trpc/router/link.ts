@@ -3,13 +3,38 @@ import { z } from "zod";
 import { router, protectedProcedure } from "../trpc";
 
 export const linkRouter = router({
-  getLinks: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.link.findMany({
-      where: {
-        userId: ctx.session.user.id,
-      },
-    });
-  }),
+  getLinks: protectedProcedure
+    .input(
+      z
+        .object({ sort: z.string().nullish(), status: z.string().nullish() })
+        .nullish()
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.link.findMany({
+        where:
+          input?.status === undefined
+            ? { userId: ctx.session.user.id, status: "ACTIVE" }
+            : input?.status === "none" || input?.status === "all"
+            ? { userId: ctx.session.user.id }
+            : {
+                userId: ctx.session.user.id,
+                OR: input.status?.split(",").map((status) => ({
+                  status: status.toUpperCase() as
+                    | "ACTIVE"
+                    | "ARCHIVED"
+                    | "EXPIRED",
+                })),
+              },
+        orderBy:
+          input && input.sort === "clicks"
+            ? {
+                clicks: "desc",
+              }
+            : {
+                createdAt: "desc",
+              },
+      });
+    }),
   getLink: protectedProcedure
     .input(z.object({ shortUrl: z.string() }))
     .query(({ ctx, input }) => {

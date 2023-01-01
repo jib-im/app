@@ -1,18 +1,23 @@
 import HomeStatusBar from "../components/HomeStatusBar";
-// import { trpc } from "../utils/trpc";
 import Image from "next/image";
 import LinkComponent from "../components/Links";
+import { useRouter } from "next/router";
 import { useFetchLinks } from "../hooks/useFetchLinks";
 
 export default function Dashboard() {
-  const { data, isLoading } = useFetchLinks();
+  const { query } = useRouter();
+  const { data, isLoading } = useFetchLinks({
+    sort: query.sort as string,
+    status: query.status as string,
+  });
 
   return (
     <section className="mx-auto min-h-[38rem] max-w-screen-lg p-4">
       <div className="flex w-full flex-col gap-y-4">
+        {isLoading ? <HomeStatusBar loading /> : <HomeStatusBar />}
+
         {isLoading ? (
           <>
-            <HomeStatusBar loading />
             {[...Array(3)].map((index) => (
               <LinkComponent key={index} isLoading={isLoading} />
             ))}
@@ -30,7 +35,6 @@ export default function Dashboard() {
           </>
         ) : (
           <>
-            <HomeStatusBar />
             {data.map((link) => (
               <LinkComponent key={link.shortUrl} link={link} />
             ))}
