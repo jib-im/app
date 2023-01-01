@@ -14,7 +14,7 @@ import LinkModal from "./LinkModal";
 import type { ModalType } from "./LinkModal";
 import { useModal } from "../hooks/useModal";
 import Moment from "react-moment";
-import { Link as LinkType } from "@prisma/client";
+import { type Link as LinkType } from "@prisma/client";
 
 const LinkComponent = ({
   link,

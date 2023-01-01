@@ -6,7 +6,7 @@ import generator from "generate-password";
 import Balancer from "react-wrap-balancer";
 import { trpc } from "../utils/trpc";
 import { useFetchLinks } from "../hooks/useFetchLinks";
-import { Link } from "@prisma/client";
+import { type Link } from "@prisma/client";
 
 export type ModalType =
   | { type: "add" }
