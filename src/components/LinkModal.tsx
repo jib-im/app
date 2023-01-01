@@ -7,6 +7,7 @@ import Balancer from "react-wrap-balancer";
 import { trpc } from "../utils/trpc";
 import { type Link } from "@prisma/client";
 import { useFetchLinks } from "../hooks/useFetchLinks";
+import { useRouter } from "next/router";
 
 export type ModalType =
   | { type: "add" }
@@ -39,8 +40,11 @@ const LinkModal = ({
   const archiveLinkMutation = trpc.link.archiveLink.useMutation();
   const unarchiveLinkMutation = trpc.link.unarchiveLink.useMutation();
   const verifyShortUrlMutation = trpc.link.verifyShortUrl.useMutation();
-
-  const { refetch } = useFetchLinks({});
+  const { query } = useRouter();
+  const { refetch } = useFetchLinks({
+    sort: query.sort as string,
+    status: query.status as string,
+  });
 
   const [linkState, setLinkState] = useState<{
     destinationLink: string;
