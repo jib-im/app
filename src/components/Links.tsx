@@ -56,6 +56,11 @@ const LinkComponent = ({
                   : "hover:scale-110 hover:bg-gray-600 hover:text-blue-200"
               }`}
               disabled={isLoading}
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `https://jib.im/${link?.shortUrl}`
+                );
+              }}
             >
               <FaRegCopy className={`h-3 w-3${isLoading && " opacity-0"}`} />
             </button>
