@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { router, protectedProcedure } from "../trpc";
 
 export const linkRouter = router({
   getLinks: protectedProcedure.query(({ ctx }) => {

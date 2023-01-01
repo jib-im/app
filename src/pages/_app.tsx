@@ -21,14 +21,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const { pathname } = useRouter();
 
   return (
-    <main className={`${poppins.variable} font-sans`}>
-      <SessionProvider session={session}>
+    <SessionProvider session={session}>
+      <main className={`${poppins.variable} font-sans`}>
         {pathname !== "/login" && <Header session={session} />}
         <Component {...pageProps} />
         <Analytics />
         {pathname !== "/login" && <Footer />}
-      </SessionProvider>
-    </main>
+      </main>
+    </SessionProvider>
   );
 };
 

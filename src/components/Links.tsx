@@ -8,7 +8,7 @@ import {
   FaRegTrashAlt,
 } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import Link from "next/link";
 import LinkModal from "./LinkModal";
 import type { ModalType } from "./LinkModal";

@@ -3,6 +3,15 @@ export const TABS = [
   { name: "Settings", title: "Settings", href: "/settings" },
 ];
 
+export const lastTime = [
+  { title: "Last hour", value: "last-hour" },
+  { title: "Last 24 hours", value: "last-24-hours", hasChecked: true },
+  { title: "Last 7 days", value: "last-7-days" },
+  { title: "Last 30 days", value: "last-30-days" },
+  { title: "Last 3 months", value: "last-4-months" },
+  { title: "Last year", value: "last-year" },
+];
+
 import { FaCircle, FaSortAmountDown, FaStream } from "react-icons/fa";
 export const STATUS_BAR: {
   title: string;
