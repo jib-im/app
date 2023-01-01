@@ -79,6 +79,18 @@ export const linkRouter = router({
         },
       });
     }),
+  unarchiveLink: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.link.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: "ACTIVE",
+        },
+      });
+    }),
   updateLink: protectedProcedure
     .input(
       z.object({

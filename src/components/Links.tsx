@@ -98,6 +98,9 @@ const LinkComponent = ({
             <div className="hidden h-4 w-28 animate-pulse bg-gray-700 sm:block" />
           ) : (
             <p className="hidden text-sm leading-none sm:block">
+              {link?.status === "ARCHIVED" && (
+                <span className="text-red-700">(Archived) </span>
+              )}
               <Moment fromNow>{link?.createdAt}</Moment>
             </p>
           )}
@@ -125,7 +128,11 @@ const LinkComponent = ({
               <Menu.Items className="absolute top-10 right-0 z-10 flex w-44 flex-col rounded-lg border border-gray-700/50 bg-gray-800 p-2 shadow-xl">
                 {[
                   { title: "Edit", icon: <FaEdit /> },
-                  { title: "Archive", icon: <FaArchive /> },
+                  {
+                    title:
+                      link?.status === "ARCHIVED" ? "Unarchive" : "Archive",
+                    icon: <FaArchive />,
+                  },
                   {
                     title: "Delete",
                     icon: <FaRegTrashAlt />,
@@ -156,6 +163,12 @@ const LinkComponent = ({
                             case "Delete":
                               setModalType({
                                 type: "delete",
+                                link,
+                              });
+                              break;
+                            case "Unarchive":
+                              setModalType({
+                                type: "unarchive",
                                 link,
                               });
                               break;

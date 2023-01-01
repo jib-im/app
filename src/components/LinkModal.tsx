@@ -18,6 +18,10 @@ export type ModalType =
   | {
       type: "archive";
       link: Link;
+    }
+  | {
+      type: "unarchive";
+      link: Link;
     };
 
 const LinkModal = ({
@@ -33,6 +37,7 @@ const LinkModal = ({
   const updateLinkMutation = trpc.link.updateLink.useMutation();
   const removeLinkMutation = trpc.link.removeLink.useMutation();
   const archiveLinkMutation = trpc.link.archiveLink.useMutation();
+  const unarchiveLinkMutation = trpc.link.unarchiveLink.useMutation();
   const verifyShortUrlMutation = trpc.link.verifyShortUrl.useMutation();
 
   const { refetch } = useFetchLinks({});
@@ -173,6 +178,8 @@ const LinkModal = ({
                           return `Archive jib.im/${modalType.link.shortUrl}`;
                         case "delete":
                           return `Delete jib.im/${modalType.link.shortUrl}`;
+                        case "unarchive":
+                          return `Unarchive jib.im/${modalType.link.shortUrl}`;
                       }
                     })()}
                   </span>
@@ -193,6 +200,15 @@ const LinkModal = ({
                             <p className="text-sm font-light text-gray-300">
                               Warning: Deleting this link will remove all of its
                               stats. This action cannot be undone.
+                            </p>
+                          </Balancer>
+                        );
+                      case "unarchive":
+                        return (
+                          <Balancer>
+                            <p className="text-sm font-light text-gray-300">
+                              By unarchiving this link, it will show up on your
+                              main dashboard again.
                             </p>
                           </Balancer>
                         );
@@ -394,6 +410,30 @@ const LinkModal = ({
                             {archiveLinkMutation.isLoading
                               ? "Loading..."
                               : "Confirm archive"}
+                          </button>
+                        </form>
+                      );
+                    case "unarchive":
+                      return (
+                        <form
+                          className="flex flex-col gap-y-4 px-4 py-6 sm:px-8"
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+                            await unarchiveLinkMutation.mutateAsync({
+                              id: modalType.link.id,
+                            });
+                            refetch();
+                            closeModal();
+                          }}
+                        >
+                          <button
+                            disabled={unarchiveLinkMutation.isLoading}
+                            type="submit"
+                            className="rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-black transition-colors hover:bg-transparent hover:text-gray-300"
+                          >
+                            {unarchiveLinkMutation.isLoading
+                              ? "Loading..."
+                              : "Confirm unarchive"}
                           </button>
                         </form>
                       );
