@@ -1,15 +1,38 @@
-import { trpc } from "./../../../utils/trpc";
 import { z } from "zod";
-import generator from "generate-password";
 
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const linkRouter = router({
   getLinks: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.link.findMany({
-      where: { userId: ctx.session.user.id },
+      where: {
+        userId: ctx.session.user.id,
+      },
     });
   }),
+  getLink: protectedProcedure
+    .input(z.object({ shortUrl: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.link.findFirst({
+        where: {
+          shortUrl: input.shortUrl,
+          AND: {
+            userId: ctx.session.user.id,
+          },
+        },
+      });
+    }),
+  createLink: protectedProcedure
+    .input(z.object({ url: z.string(), shortUrl: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.link.create({
+        data: {
+          url: input.url,
+          shortUrl: input.shortUrl,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
   removeLink: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
@@ -28,18 +51,6 @@ export const linkRouter = router({
         },
         data: {
           status: "ARCHIVED",
-        },
-      });
-    }),
-
-  createLink: protectedProcedure
-    .input(z.object({ url: z.string(), shortUrl: z.string() }))
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.link.create({
-        data: {
-          url: input.url,
-          shortUrl: input.shortUrl,
-          userId: ctx.session.user.id,
         },
       });
     }),
@@ -72,15 +83,4 @@ export const linkRouter = router({
         },
       });
     }),
-
-  hello: publicProcedure
-    .input(z.object({ text: z.string().nullish() }).nullish())
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input?.text ?? "world"}`,
-      };
-    }),
-  // getAll: publicProcedure.query(({ ctx }) => {
-  //   return ctx.prisma.example.findMany();
-  // }),
 });

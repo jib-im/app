@@ -18,15 +18,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const router = useRouter();
+  const { pathname } = useRouter();
 
   return (
     <main className={`${poppins.variable} font-sans`}>
       <SessionProvider session={session}>
-        {router.pathname !== "/login" && <Header session={session} />}
+        {pathname !== "/login" && <Header session={session} />}
         <Component {...pageProps} />
         <Analytics />
-        {router.pathname !== "/login" && <Footer />}
+        {pathname !== "/login" && <Footer />}
       </SessionProvider>
     </main>
   );

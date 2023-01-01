@@ -74,7 +74,7 @@ const LinkComponent = ({
               <div className="h-5 w-16 animate-pulse rounded-md bg-gray-700 sm:w-24" />
             ) : (
               <Link
-                href={`/links/${link?.shortUrl}`}
+                href={`/link/${link?.shortUrl}`}
                 className="flex items-center gap-x-2 rounded-md bg-gray-700 px-2 py-1 transition-all hover:scale-105 hover:bg-gray-600 hover:text-blue-200"
               >
                 <FaRegChartBar className="h-3 w-3" />

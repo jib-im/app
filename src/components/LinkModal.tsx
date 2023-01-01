@@ -64,27 +64,27 @@ const LinkModal = ({
     }
   }, [modalType.type, isOpen]);
 
-  useEffect(() => {
-    const timeOutId = setTimeout(async () => {
-      if (
-        await verifyShortUrlMutation.mutateAsync({
-          shortUrl: linkState.shortLink,
-        })
-      ) {
-        setLinkState({
-          ...linkState,
-          shortUrlError: "This short link is already taken",
-        });
-      }
-    }, 500);
-    setLinkState({
-      ...linkState,
-      shortUrlError: undefined,
-    });
-    return () => {
-      clearTimeout(timeOutId);
-    };
-  }, [linkState.shortLink]);
+  // useEffect(() => {
+  //   const timeOutId = setTimeout(async () => {
+  //     if (
+  //       await verifyShortUrlMutation.mutateAsync({
+  //         shortUrl: linkState.shortLink,
+  //       })
+  //     ) {
+  //       setLinkState({
+  //         ...linkState,
+  //         shortUrlError: "This short link is already taken",
+  //       });
+  //     }
+  //   }, 500);
+  //   setLinkState({
+  //     ...linkState,
+  //     shortUrlError: undefined,
+  //   });
+  //   return () => {
+  //     clearTimeout(timeOutId);
+  //   };
+  // }, [linkState.shortLink]);
 
   const RandomizeButton = () => {
     return (

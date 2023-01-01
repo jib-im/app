@@ -7,8 +7,11 @@ import { Fragment } from "react";
 import { signOut } from "next-auth/react";
 import { FaSignOutAlt } from "react-icons/fa";
 import PageTitle from "./PageTitle";
+import { useRouter } from "next/router";
 
 const Header = ({ session }: { session: Session | null }) => {
+  const { pathname } = useRouter();
+
   return (
     <header className="sticky top-0 z-40 border-b border-gray-800 bg-gray-900">
       <div className="mx-auto max-w-screen-lg">
@@ -17,6 +20,7 @@ const Header = ({ session }: { session: Session | null }) => {
             <Link href="/">
               <h3 className="text-lg font-bold">jib</h3>
             </Link>
+
             <div className="pointer-events-none hidden select-none text-gray-500 sm:block">
               /
             </div>
@@ -83,7 +87,7 @@ const Header = ({ session }: { session: Session | null }) => {
         </div>
         <HeaderTab />
       </div>
-      <PageTitle />
+      {(pathname === "/" || pathname === "/settings") && <PageTitle />}
     </header>
   );
 };
