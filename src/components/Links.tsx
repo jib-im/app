@@ -13,15 +13,14 @@ import Link from "next/link";
 import LinkModal from "./LinkModal";
 import type { ModalType } from "./LinkModal";
 import { useModal } from "../hooks/useModal";
-import type { inferRouterOutputs } from "@trpc/server";
-import type { AppRouter } from "../server/trpc/router/_app";
 import Moment from "react-moment";
+import { Link as LinkType } from "@prisma/client";
 
 const LinkComponent = ({
   link,
   isLoading,
 }: {
-  link?: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+  link?: LinkType;
   isLoading?: boolean;
 }) => {
   const { isOpen, closeModal, openModal } = useModal();

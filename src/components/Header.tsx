@@ -20,26 +20,29 @@ const Header = ({ session }: { session: Session | null }) => {
             <Link href="/">
               <h3 className="text-lg font-bold">jib</h3>
             </Link>
+            {pathname !== "/link/[shortUrl]" && (
+              <>
+                <div className="pointer-events-none hidden select-none text-gray-500 sm:block">
+                  /
+                </div>
 
-            <div className="pointer-events-none hidden select-none text-gray-500 sm:block">
-              /
-            </div>
+                <div className="hidden items-center gap-x-2 sm:flex">
+                  {session?.user?.image && (
+                    <Image
+                      src={session.user.image}
+                      alt={`${session.user.name}'s profile picture`}
+                      width={24}
+                      height={24}
+                      className="rounded-full object-cover object-center"
+                    />
+                  )}
 
-            <div className="hidden items-center gap-x-2 sm:flex">
-              {session?.user?.image && (
-                <Image
-                  src={session.user.image}
-                  alt={`${session.user.name}'s profile picture`}
-                  width={24}
-                  height={24}
-                  className="rounded-full object-cover object-center"
-                />
-              )}
-
-              <p className="truncate text-sm text-gray-400">
-                {session?.user?.email}
-              </p>
-            </div>
+                  <p className="truncate text-sm text-gray-400">
+                    {session?.user?.email}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
           <Menu as="div" className="relative">
             <Menu.Button className="h-10 min-h-[40px] w-10 min-w-[40px] rounded-full bg-gray-500 bg-opacity-20 p-1 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-50 focus-visible:ring-opacity-75">

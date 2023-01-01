@@ -5,20 +5,19 @@ import { FaRandom, FaTimes } from "react-icons/fa";
 import generator from "generate-password";
 import Balancer from "react-wrap-balancer";
 import { trpc } from "../utils/trpc";
-import { type inferRouterOutputs } from "@trpc/server";
-import { type AppRouter } from "../server/trpc/router/_app";
 import { useFetchLinks } from "../hooks/useFetchLinks";
+import { Link } from "@prisma/client";
 
 export type ModalType =
   | { type: "add" }
   | {
       type: "delete";
-      link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+      link: Link;
     }
-  | { type: "edit"; link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0] }
+  | { type: "edit"; link: Link }
   | {
       type: "archive";
-      link: inferRouterOutputs<AppRouter>["link"]["getLinks"][0];
+      link: Link;
     };
 
 const LinkModal = ({

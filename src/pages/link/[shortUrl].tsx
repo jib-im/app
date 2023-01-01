@@ -103,7 +103,7 @@ const LinkPage = ({ shortUrl }: { shortUrl: string }) => {
   return (
     <section className="py-8">
       <div
-        className={`sticky top-28 z-10 border-b  bg-gray-900 transition-colors ${
+        className={`sticky top-[6.99rem] z-10 border-b bg-gray-900 transition-colors ${
           scrollPosition > 32
             ? "border-gray-800 shadow-lg"
             : "border-transparent"
