@@ -131,10 +131,10 @@ export default function Login() {
               >
                 {!state.email.loading ? state.email.status : "Loading..."}
               </button>
-              <span className="px-4 text-center text-xs text-red-700">
+              {/* <span className="px-4 text-center text-xs text-red-700">
                 not yet working - try logging in with your google or github
                 account
-              </span>
+              </span> */}
             </form>
             <p className="text-gray-500">or</p>
             <div className="flex w-full flex-col items-center gap-y-2">
