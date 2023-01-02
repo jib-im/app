@@ -1,12 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaTwitter } from "react-icons/fa";
-import { useHydrationFailedHack } from "../hooks/useHydrationFailedHack";
 
 const Footer = () => {
-  const { mounted } = useHydrationFailedHack();
-  if (!mounted) return null;
-
   return (
     <footer className="border-t border-gray-800">
       <section className="mx-auto flex max-w-screen-lg items-center justify-center gap-x-8 p-4 text-gray-300">

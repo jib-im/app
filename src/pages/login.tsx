@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import Balancer from "react-wrap-balancer";
-import { useHydrationFailedHack } from "../hooks/useHydrationFailedHack";
 import { NextAuthErrorMessage } from "../utils/NextAuthErrorMessage";
 import { useRouter } from "next/router";
 import { authOptions } from "./api/auth/[...nextauth]";
@@ -25,8 +24,6 @@ export default function Login() {
     github: { loading: false, error: null, status: "Sign in with Github" },
   });
 
-  const { mounted } = useHydrationFailedHack();
-  if (!mounted) return null;
   return (
     <>
       <Head>
@@ -101,7 +98,7 @@ export default function Login() {
                       error: null,
                     },
                   }));
-                }, 5000);
+                }, 10000);
               }}
               className="flex w-full flex-col items-center gap-y-3"
             >
@@ -127,7 +124,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={state.email.loading}
-                className="w-full rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-black transition-colors hover:bg-transparent hover:text-gray-300"
+                className="w-full rounded-md border border-gray-300 bg-gray-50 px-4 py-2 text-black transition-colors hover:bg-transparent hover:text-gray-300 disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-500 disabled:text-gray-800"
               >
                 {!state.email.loading ? state.email.status : "Loading..."}
               </button>
@@ -172,7 +169,7 @@ export default function Login() {
                   }));
                 }}
                 disabled={state.google.loading}
-                className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-500 px-4 py-2 transition-colors hover:bg-gray-50 hover:text-black"
+                className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-500 px-4 py-2 transition-colors hover:bg-gray-50 hover:text-black disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-500 disabled:text-gray-800"
               >
                 <FaGoogle className="text-lg" />
                 {!state.google.loading ? "Sign in with Google" : "Loading..."}
@@ -211,7 +208,7 @@ export default function Login() {
                   }));
                 }}
                 disabled={state.github.loading}
-                className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-500 px-4 py-2 transition-colors hover:bg-gray-50 hover:text-black"
+                className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-500 px-4 py-2 transition-colors hover:bg-gray-50 hover:text-black disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-500 disabled:text-gray-800"
               >
                 <FaGithub className="text-lg" />
                 {!state.github.loading ? "Sign in with Github" : "Loading..."}
