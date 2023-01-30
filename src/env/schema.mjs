@@ -25,6 +25,8 @@ export const serverSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string(),
   EMAIL_SERVER: z.string(),
   EMAIL_FROM: z.string().email(),
+
+  DOMAIN: z.string().url(),
 });
 
 /**
@@ -43,6 +45,8 @@ export const serverEnv = {
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   EMAIL_SERVER: process.env.EMAIL_SERVER,
   EMAIL_FROM: process.env.EMAIL_FROM,
+
+  DOMAIN: process.env.DOMAIN,
 };
 
 /**
@@ -51,7 +55,7 @@ export const serverEnv = {
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-  // NEXT_PUBLIC_CLIENTVAR: z.string(),
+  NEXT_PUBLIC_DOMAIN: z.string().url(),
 });
 
 /**
@@ -61,5 +65,5 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.input<typeof clientSchema>]: string | undefined }}
  */
 export const clientEnv = {
-  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+  NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
 };
