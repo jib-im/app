@@ -15,6 +15,8 @@ import {
 } from "@mantine/core";
 import { BsGoogle, BsGithub } from "react-icons/bs";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { env } from "../env/client.mjs";
 
 const Home: NextPage = () => {
   // const { colorScheme, toggleColorScheme } = useMantineColorScheme() as {
@@ -22,6 +24,16 @@ const Home: NextPage = () => {
   //   toggleColorScheme: () => void;
   // };
   // const dark = colorScheme === "dark";
+
+  const [state, setState] = useState<{
+    email: { loading: boolean; error: string | null };
+    google: { loading: boolean; error: string | null };
+    github: { loading: boolean; error: string | null };
+  }>({
+    email: { loading: false, error: null },
+    google: { loading: false, error: null },
+    github: { loading: false, error: null },
+  });
 
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
@@ -60,11 +72,22 @@ const Home: NextPage = () => {
           <Button
             variant="outline"
             radius="xl"
-            onClick={() =>
-              signIn("google", {
-                callbackUrl: "http://localhost:3000/dashboard",
-              })
-            }
+            loading={state.google.loading}
+            onClick={async () => {
+              setState((state) => ({
+                ...state,
+                google: { ...state.google, loading: true },
+              }));
+
+              await signIn("google", {
+                callbackUrl: `${env.NEXT_PUBLIC_DOMAIN}/dashboard`,
+              });
+
+              setState((state) => ({
+                ...state,
+                google: { ...state.google, loading: false },
+              }));
+            }}
           >
             <Flex columnGap="xs" align="center">
               <BsGoogle />
@@ -74,11 +97,22 @@ const Home: NextPage = () => {
           <Button
             variant="outline"
             radius="xl"
-            onClick={() =>
-              signIn("github", {
-                callbackUrl: "http://localhost:3000/dashboard",
-              })
-            }
+            loading={state.github.loading}
+            onClick={async () => {
+              setState((state) => ({
+                ...state,
+                github: { ...state.github, loading: true },
+              }));
+
+              await signIn("github", {
+                callbackUrl: `${env.NEXT_PUBLIC_DOMAIN}/dashboard`,
+              });
+
+              setState((state) => ({
+                ...state,
+                github: { ...state.github, loading: false },
+              }));
+            }}
           >
             <Flex columnGap="xs" align="center">
               <BsGithub />
@@ -93,7 +127,53 @@ const Home: NextPage = () => {
           my="lg"
         />
 
-        <form>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setState((state) => ({
+              ...state,
+              email: { ...state.email, loading: true },
+            }));
+            await signIn("email", {
+              email: form.values.email,
+              redirect: false,
+            })
+              // .catch((error) => {
+              //   // setState((state) => ({
+              //   //   ...state,
+              //   //   email: {
+              //   //     ...state.email,
+              //   //     error,
+              //   //   },
+              //   // }));
+              // })
+              .finally(() => {
+                form.reset;
+                setState((state) => ({
+                  ...state,
+                  email: {
+                    ...state.email,
+                    status: "Email sent - check your inbox!",
+                  },
+                }));
+              });
+            setState((state) => ({
+              ...state,
+              email: { ...state.email, loading: false },
+            }));
+
+            setTimeout(() => {
+              setState((state) => ({
+                ...state,
+                email: {
+                  ...state.email,
+                  status: "Send magic link",
+                  error: null,
+                },
+              }));
+            }, 10000);
+          }}
+        >
           <Stack>
             <TextInput
               required
@@ -119,7 +199,9 @@ const Home: NextPage = () => {
                 ? "Already have an account? Login"
                 : "Don't have an account? Register"}
             </Anchor>
-            <Button type="submit">{upperFirst(type)}</Button>
+            <Button type="submit" loading={state.email.loading}>
+              {upperFirst(type)}
+            </Button>
           </Group>
         </form>
       </Paper>
