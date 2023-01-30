@@ -36,7 +36,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
           colorScheme={colorScheme}
           toggleColorScheme={toggleColorScheme}
         >
-          <MantineProvider withGlobalStyles withNormalizeCSS>
+          <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={{ colorScheme }}
+          >
             <Component {...pageProps} />
           </MantineProvider>
         </ColorSchemeProvider>
