@@ -1,7 +1,12 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { MantineProvider } from "@mantine/core";
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  type ColorScheme,
+} from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import Head from "next/head";
 
 import { api } from "../utils/api";
@@ -10,6 +15,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "theme",
+    defaultValue: "dark",
+    getInitialValueInEffect: true,
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
   return (
     <>
       <Head>
@@ -18,16 +32,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SessionProvider session={session}>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{
-            /** Put your mantine theme override here */
-            colorScheme: "light",
-          }}
+        <ColorSchemeProvider
+          colorScheme={colorScheme}
+          toggleColorScheme={toggleColorScheme}
         >
-          <Component {...pageProps} />
-        </MantineProvider>
+          <MantineProvider withGlobalStyles withNormalizeCSS>
+            <Component {...pageProps} />
+          </MantineProvider>
+        </ColorSchemeProvider>
       </SessionProvider>
     </>
   );
