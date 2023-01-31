@@ -9,6 +9,7 @@ import {
   Divider,
   Flex,
   Menu,
+  Stack,
   Title,
   useMantineColorScheme,
 } from "@mantine/core";
@@ -19,6 +20,7 @@ import {
   BsSortDown,
   BsSortNumericDown,
 } from "react-icons/bs";
+import LinkComponent from "../components/Link";
 
 const Index = () => {
   const { status } = useSession();
@@ -39,26 +41,26 @@ const Index = () => {
 
       <Container py={16}>
         <Flex justify="end" columnGap="sm">
-          <Menu position="bottom-end" width={200}>
+          <Menu position="bottom-end" width={200} closeOnItemClick={false}>
             <Menu.Target>
               <Button
                 leftIcon={<BsSortAlphaUp />}
                 rightIcon={<BsChevronDown />}
+                variant="default"
+                radius="xl"
               >
                 Sort by
               </Button>
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Item icon={<BsSortDown />} closeMenuOnClick={false}>
-                Date Added
-              </Menu.Item>
-              <Menu.Item icon={<BsSortNumericDown />} closeMenuOnClick={false}>
+              <Menu.Item icon={<BsSortDown />}>Date Added</Menu.Item>
+              <Menu.Item icon={<BsSortNumericDown />}>
                 Number of Clicks
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-          <Menu position="bottom-end" width={148}>
+          <Menu position="bottom-end" width={148} closeOnItemClick={false}>
             <Menu.Target>
               <Button
                 leftIcon={
@@ -75,24 +77,40 @@ const Index = () => {
                   </Box>
                 }
                 rightIcon={<BsChevronDown />}
+                variant="default"
+                radius="xl"
               >
                 Status
               </Button>
             </Menu.Target>
 
             <Menu.Dropdown>
-              <Menu.Item icon={<BsSortDown />} closeMenuOnClick={false}>
+              <Menu.Item icon={<BsCircleFill size={12} color="#22c55e" />}>
                 Active
               </Menu.Item>
-              <Menu.Item icon={<BsSortNumericDown />} closeMenuOnClick={false}>
+              <Menu.Item icon={<BsCircleFill size={12} color="#f59e0b" />}>
                 Expired
               </Menu.Item>
-              <Menu.Item icon={<BsSortNumericDown />} closeMenuOnClick={false}>
+              <Menu.Item icon={<BsCircleFill size={12} color="#9ca3af" />}>
                 Archived
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Flex>
+
+        <Stack mt={16} spacing="xs">
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+          <LinkComponent />
+        </Stack>
       </Container>
     </main>
   );
