@@ -10,6 +10,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import Head from "next/head";
 
 import { api } from "../utils/api";
+import Header from "../components/Header";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -41,6 +42,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
             withNormalizeCSS
             theme={{ colorScheme }}
           >
+            {session && <Header />}
+
             <Component {...pageProps} />
           </MantineProvider>
         </ColorSchemeProvider>
