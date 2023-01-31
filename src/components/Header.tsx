@@ -37,7 +37,6 @@ const Header = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "0 1rem",
       }}
     >
       <Container
@@ -102,11 +101,11 @@ const Header = () => {
                     pointerEvents: "none",
                   }}
                 />
-                <Box>
-                  <Text size="xs" align="left" weight="bold">
+                <Box w={72}>
+                  <Text size="xs" align="left" weight="bold" truncate>
                     {session?.user.name}
                   </Text>
-                  <Text size="xs" align="left" truncate w={72}>
+                  <Text size="xs" align="left" truncate>
                     {session?.user.email}
                   </Text>
                 </Box>
