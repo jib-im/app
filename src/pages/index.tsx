@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 
 const Index = () => {
   const { status } = useSession();
+
   if (status === "unauthenticated") return <Login />;
   return <main></main>;
 };
