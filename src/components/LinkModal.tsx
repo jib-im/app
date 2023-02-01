@@ -83,7 +83,7 @@ const LinkModal = ({
                           leftIcon={<BsShuffle />}
                           size="xs"
                           variant="subtle"
-                          color="gray"
+                          color={colorScheme === "dark" ? "dark.0" : "gray.9"}
                           px={8}
                           h={24}
                           loaderPosition="center"
@@ -142,7 +142,7 @@ const LinkModal = ({
                           leftIcon={<BsShuffle />}
                           size="xs"
                           variant="subtle"
-                          color="gray"
+                          color={colorScheme === "dark" ? "dark.0" : "gray.9"}
                           px={8}
                           h={24}
                           loaderPosition="center"
@@ -166,11 +166,60 @@ const LinkModal = ({
               </>
             );
           case "DELETE":
-            return <>DELETE</>;
+            return (
+              <>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <Stack>
+                    <Text>
+                      Warning: Deleting this link will remove all of its stats.
+                      This action cannot be undone.
+                    </Text>
+
+                    <Text
+                      component="label"
+                      htmlFor="short-link"
+                      size="sm"
+                      color={colorScheme === "dark" ? "dark.0" : "gray.9"}
+                    >
+                      To verify, type{" "}
+                      <Text component="span" weight={500}>
+                        jib.im/github
+                      </Text>{" "}
+                      below{" "}
+                      <Text
+                        component="span"
+                        color={colorScheme === "dark" ? "red.8" : "red.6"}
+                      >
+                        *
+                      </Text>
+                    </Text>
+
+                    <TextInput placeholder="jib.im/github" required />
+                    <Button color="red" type="submit">
+                      Delete link
+                    </Button>
+                  </Stack>
+                </form>
+              </>
+            );
           case "ARCHIVE":
-            return <>ARCHIVE</>;
+            return (
+              <>
+                <Stack>
+                  <Text>
+                    Archived links will still work - they just won&apos;t show
+                    up on your main dashboard.
+                  </Text>
+                  <Button color="gray">Archive link</Button>
+                </Stack>
+              </>
+            );
           default:
-            return <>DEFAULT</>;
+            return <></>;
         }
       })()}
     </Modal>
