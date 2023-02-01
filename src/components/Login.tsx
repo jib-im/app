@@ -81,11 +81,6 @@ const Login = () => {
               }));
 
               await signIn("google");
-
-              setState((state) => ({
-                ...state,
-                google: { ...state.google, loading: false },
-              }));
             }}
           >
             <Flex columnGap="xs" align="center">
@@ -104,11 +99,6 @@ const Login = () => {
               }));
 
               await signIn("github");
-
-              setState((state) => ({
-                ...state,
-                github: { ...state.github, loading: false },
-              }));
             }}
           >
             <Flex columnGap="xs" align="center">
