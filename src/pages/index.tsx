@@ -21,20 +21,39 @@ import {
   BsSortNumericDown,
 } from "react-icons/bs";
 import LinkComponent from "../components/Link";
+import LinkModal from "../components/LinkModal";
+import { useState } from "react";
 
 const Index = () => {
   const { status } = useSession();
   const { colorScheme } = useMantineColorScheme();
+  const [linkModal, setLinkModal] = useState<{
+    isOpen: boolean;
+    link?: { link: string };
+    type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
+  }>({
+    isOpen: false,
+  });
 
   if (status === "unauthenticated") return <Login />;
 
   return (
     <>
+      <LinkModal setIsOpen={setLinkModal} linkModal={linkModal} />
       <main>
         <Container>
           <Flex h={128} align="center" justify="space-between">
             <Title align="center">Links</Title>
-            <Button radius="xl" variant="outline">
+            <Button
+              radius="xl"
+              variant="outline"
+              onClick={() => {
+                setLinkModal({
+                  isOpen: true,
+                  type: "ADD",
+                });
+              }}
+            >
               Add
             </Button>
           </Flex>

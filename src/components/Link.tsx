@@ -21,18 +21,16 @@ const LinkComponent = () => {
   const { colorScheme } = useMantineColorScheme();
   const [linkModal, setLinkModal] = useState<{
     isOpen: boolean;
-    link: null;
-    type: "EDIT" | "DELETE" | "ARCHIVE" | null;
+    link?: { link: string };
+    type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
   }>({
     isOpen: false,
-    link: null,
-    type: null,
   });
   return (
     <>
       <LinkModal linkModal={linkModal} setIsOpen={setLinkModal} />
       <Flex
-        bg={colorScheme === "dark" ? "dark.5" : "gray.2"}
+        bg={colorScheme === "dark" ? "dark.6" : "gray.0"}
         justify="space-between"
         px={20}
         py={12}
@@ -79,7 +77,6 @@ const LinkComponent = () => {
                 onClick={() =>
                   setLinkModal({
                     isOpen: true,
-                    link: null,
                     type: "EDIT",
                   })
                 }
@@ -91,7 +88,6 @@ const LinkComponent = () => {
                 onClick={() =>
                   setLinkModal({
                     isOpen: true,
-                    link: null,
                     type: "ARCHIVE",
                   })
                 }
@@ -100,11 +96,10 @@ const LinkComponent = () => {
               </Menu.Item>
               <Menu.Item
                 icon={<BsTrash />}
-                color="red.5"
+                color={colorScheme === "dark" ? "red.5" : "red.9"}
                 onClick={() =>
                   setLinkModal({
                     isOpen: true,
-                    link: null,
                     type: "DELETE",
                   })
                 }
