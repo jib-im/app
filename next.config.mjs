@@ -8,7 +8,7 @@
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ["avatars.githubusercontent.com"],
+    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
   },
   reactStrictMode: true,
   /* If trying out the experimental appDir, comment the i18n config out
@@ -16,11 +16,6 @@ const config = {
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
-  },
-  experimental: {
-    fontLoaders: [
-      { loader: "@next/font/google", options: { subsets: ["latin"] } },
-    ],
   },
 };
 export default config;

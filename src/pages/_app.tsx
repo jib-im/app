@@ -10,12 +10,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import Head from "next/head";
 
 import { api } from "../utils/api";
-// import { Poppins } from "@next/font/google";
 import Header from "../components/Header";
-// const poppins = Poppins({
-//   subsets: ["latin"],
-//   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-// });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -50,7 +45,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
               colorScheme,
             }}
           >
-            {session && <Header />}
+            {session && <Header session={session} />}
 
             <Component {...pageProps} />
           </MantineProvider>
