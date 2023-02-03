@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
   const links = api.link.getAll.useQuery();
+
   return (
     <>
       <LinkModal
@@ -34,6 +35,7 @@ const Dashboard = () => {
         onClose={() => {
           setIsOpenAddModal(false);
         }}
+        refetch={links.refetch}
       />
       <main>
         <Container>
@@ -113,7 +115,11 @@ const Dashboard = () => {
 
           <Stack mt={16} spacing="xs">
             {links.data?.map((link) => (
-              <LinkComponent key={link.id} link={link} />
+              <LinkComponent
+                key={link.id}
+                link={link}
+                refetch={links.refetch}
+              />
             ))}
           </Stack>
         </Container>
