@@ -23,15 +23,24 @@ const LinkComponent = ({ link }: { link: LinkType }) => {
   const { colorScheme } = useMantineColorScheme();
   const [linkModal, setLinkModal] = useState<{
     isOpen: boolean;
-    link?: LinkType;
-    type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
+    type: "EDIT" | "DELETE" | "ARCHIVE" | null;
   }>({
     isOpen: false,
-    link,
+    type: null,
   });
   return (
     <>
-      <LinkModal linkModal={linkModal} setIsOpen={setLinkModal} />
+      <LinkModal
+        modalType={{ type: linkModal.type, link }}
+        isOpen={linkModal.isOpen}
+        onClose={() =>
+          setLinkModal({
+            isOpen: false,
+            type: null,
+          })
+        }
+      />
+
       <Flex
         bg={colorScheme === "dark" ? "dark.6" : "gray.0"}
         justify="space-between"

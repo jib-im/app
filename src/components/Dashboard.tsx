@@ -20,22 +20,21 @@ import LinkComponent from "../components/Link";
 import LinkModal from "../components/LinkModal";
 import { useState } from "react";
 import { api } from "../utils/api";
-import type { Link } from "@prisma/client";
 
 const Dashboard = () => {
   const { colorScheme } = useMantineColorScheme();
-  const [linkModal, setLinkModal] = useState<{
-    isOpen: boolean;
-    link?: Link;
-    type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
-  }>({
-    isOpen: false,
-  });
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
   const links = api.link.getAll.useQuery();
   return (
     <>
-      <LinkModal setIsOpen={setLinkModal} linkModal={linkModal} />
+      <LinkModal
+        isOpen={isOpenAddModal}
+        modalType={{ type: "ADD" }}
+        onClose={() => {
+          setIsOpenAddModal(false);
+        }}
+      />
       <main>
         <Container>
           <Flex h={128} align="center" justify="space-between">
@@ -44,10 +43,7 @@ const Dashboard = () => {
               radius="xl"
               variant="outline"
               onClick={() => {
-                setLinkModal({
-                  isOpen: true,
-                  type: "ADD",
-                });
+                setIsOpenAddModal(true);
               }}
             >
               Add
