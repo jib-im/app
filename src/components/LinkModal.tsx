@@ -30,6 +30,10 @@ const LinkModal = ({
         type: "ADD";
       }
     | {
+        type: "UNARCHIVE";
+        link: Link;
+      }
+    | {
         type: "EDIT";
         link: Link;
       }
@@ -53,6 +57,7 @@ const LinkModal = ({
   const editLink = api.link.update.useMutation();
   const deleteLink = api.link.delete.useMutation();
   const archiveLink = api.link.archive.useMutation();
+  const unarchiveLink = api.link.unarchive.useMutation();
 
   useEffect(() => {
     setModalState({
@@ -81,6 +86,8 @@ const LinkModal = ({
           ? `Delete jib.im/${modalType.link.shortUrl}`
           : modalType.type === "ARCHIVE"
           ? `Archive  jib.im/${modalType.link.shortUrl}`
+          : modalType.type === "UNARCHIVE"
+          ? `Unarchive jib.im/${modalType.link.shortUrl}`
           : ""
       }
     >
@@ -346,6 +353,29 @@ const LinkModal = ({
                     loading={archiveLink.isLoading}
                   >
                     Archive link
+                  </Button>
+                </Stack>
+              </>
+            );
+          case "UNARCHIVE":
+            return (
+              <>
+                <Stack>
+                  <Text>
+                    Unarchiving link will make it appear on your main dashboard.
+                  </Text>
+                  <Button
+                    color="gray"
+                    onClick={async () => {
+                      await unarchiveLink.mutateAsync({
+                        id: modalType.link.id,
+                      });
+                      refetch();
+                      onClose();
+                    }}
+                    loading={archiveLink.isLoading}
+                  >
+                    Unarchive link
                   </Button>
                 </Stack>
               </>
