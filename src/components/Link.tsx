@@ -4,6 +4,7 @@ import {
   Flex,
   MediaQuery,
   Menu,
+  Paper,
   Text,
   useMantineColorScheme,
 } from "@mantine/core";
@@ -57,20 +58,33 @@ const LinkComponent = ({
         align="center"
       >
         <Box>
-          <Link
-            href={"https://jib.im/" + link.shortUrl}
-            style={{
-              textDecoration: "none",
-            }}
-            target="_blank"
-          >
-            <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
-              <Text size="lg">{"jib.im/" + link.shortUrl}</Text>
-            </MediaQuery>
-            <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-              <Text>{"jib.im/" + link.shortUrl}</Text>
-            </MediaQuery>
-          </Link>
+          <Flex align="center" columnGap="sm">
+            <Link
+              href={"https://jib.im/" + link.shortUrl}
+              style={{
+                textDecoration: "none",
+              }}
+              target="_blank"
+            >
+              <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
+                <Text size="lg">{"jib.im/" + link.shortUrl}</Text>
+              </MediaQuery>
+              <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+                <Text>{"jib.im/" + link.shortUrl}</Text>
+              </MediaQuery>
+            </Link>
+
+            <Paper px={8} py={2} bg={colorScheme == "dark" ? "gray" : "gray.3"}>
+              <Text size="xs">
+                {link.clicks === 0
+                  ? "No clicks"
+                  : link.clicks === 1
+                  ? "1 click"
+                  : link.clicks.toString() + " clicks"}
+              </Text>
+            </Paper>
+          </Flex>
+
           <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
             <Text>{link.url}</Text>
           </MediaQuery>
