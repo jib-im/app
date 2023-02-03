@@ -8,6 +8,7 @@ import {
   TextInput,
   useMantineColorScheme,
 } from "@mantine/core";
+import type { Link } from "@prisma/client";
 import type { Dispatch, SetStateAction } from "react";
 import { BsShuffle } from "react-icons/bs";
 
@@ -17,7 +18,7 @@ const LinkModal = ({
 }: {
   linkModal: {
     isOpen: boolean;
-    link?: { link: string };
+    link?: Link;
     type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
   };
   setIsOpen: Dispatch<
@@ -37,7 +38,7 @@ const LinkModal = ({
         linkModal.type === "ADD"
           ? "Add Link"
           : linkModal.type === "EDIT"
-          ? `Edit ${"link"}`
+          ? `Edit ${linkModal.link?.shortUrl}`
           : linkModal.type === "DELETE"
           ? "Delete Link"
           : linkModal.type === "ARCHIVE"
@@ -179,26 +180,33 @@ const LinkModal = ({
                       This action cannot be undone.
                     </Text>
 
-                    <Text
-                      component="label"
-                      htmlFor="short-link"
-                      size="sm"
-                      color={colorScheme === "dark" ? "dark.0" : "gray.9"}
-                    >
-                      To verify, type{" "}
-                      <Text component="span" weight={500}>
-                        jib.im/github
-                      </Text>{" "}
-                      below{" "}
+                    <Box>
                       <Text
-                        component="span"
-                        color={colorScheme === "dark" ? "red.8" : "red.6"}
+                        component="label"
+                        htmlFor="delete-link"
+                        size="sm"
+                        color={colorScheme === "dark" ? "dark.0" : "gray.9"}
                       >
-                        *
+                        To verify, type{" "}
+                        <Text component="span" weight={500}>
+                          jib.im/github
+                        </Text>{" "}
+                        below{" "}
+                        <Text
+                          component="span"
+                          color={colorScheme === "dark" ? "red.8" : "red.6"}
+                        >
+                          *
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <TextInput placeholder="jib.im/github" required />
+                      <TextInput
+                        id="delete-link"
+                        placeholder="jib.im/github"
+                        required
+                      />
+                    </Box>
+
                     <Button color="red" type="submit">
                       Delete link
                     </Button>
@@ -218,8 +226,6 @@ const LinkModal = ({
                 </Stack>
               </>
             );
-          default:
-            return <></>;
         }
       })()}
     </Modal>
