@@ -30,7 +30,7 @@ const LinkModal = ({
         type: "ADD";
       }
     | {
-        type: "UNARCHIVE";
+        type: "UNARCHIVED";
         link: Link;
       }
     | {
@@ -42,7 +42,7 @@ const LinkModal = ({
         link: Link;
       }
     | {
-        type: "ARCHIVE";
+        type: "ARCHIVED";
         link: Link;
       };
 }) => {
@@ -84,9 +84,9 @@ const LinkModal = ({
           ? `Edit jib.im/${modalType.link.shortUrl}`
           : modalType.type === "DELETE"
           ? `Delete jib.im/${modalType.link.shortUrl}`
-          : modalType.type === "ARCHIVE"
+          : modalType.type === "ARCHIVED"
           ? `Archive  jib.im/${modalType.link.shortUrl}`
-          : modalType.type === "UNARCHIVE"
+          : modalType.type === "UNARCHIVED"
           ? `Unarchive jib.im/${modalType.link.shortUrl}`
           : ""
       }
@@ -335,7 +335,7 @@ const LinkModal = ({
                 </form>
               </>
             );
-          case "ARCHIVE":
+          case "ARCHIVED":
             return (
               <>
                 <Stack>
@@ -357,7 +357,7 @@ const LinkModal = ({
                 </Stack>
               </>
             );
-          case "UNARCHIVE":
+          case "UNARCHIVED":
             return (
               <>
                 <Stack>

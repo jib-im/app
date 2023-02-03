@@ -11,8 +11,7 @@ datasource db {
 
 enum Status {
   ACTIVE
-  INACTIVE
-  ARCHIVE
+  ARCHIVED
 }
 
 model Link {

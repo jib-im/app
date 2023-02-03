@@ -29,7 +29,10 @@ const Dashboard = () => {
 
   const { query, push } = useRouter();
 
-  const links = api.link.getAll.useQuery();
+  const links = api.link.getAll.useQuery({
+    sort: query.sort as string,
+    status: query.status as string,
+  });
 
   return (
     <>
@@ -159,7 +162,7 @@ const Dashboard = () => {
                     } else if (query.status === "none") {
                       delete query.status;
                     } else if (query.status === "all") {
-                      query.status = "expired,archived";
+                      query.status = "archived";
                     } else if (!query.status.includes("active")) {
                       query.status = query.status.concat(",active");
                     } else if (query.status.includes("active,")) {
@@ -173,10 +176,7 @@ const Dashboard = () => {
                           ? query.status.replace(",active", "")
                           : query.status;
                     } else {
-                      if (
-                        query.status.includes("expired") &&
-                        query.status.includes("archived")
-                      ) {
+                      if (query.status.includes("archived")) {
                         query.status = "all";
                       }
                     }
@@ -201,65 +201,12 @@ const Dashboard = () => {
                 </Menu.Item>
                 <Menu.Item
                   pos="relative"
-                  icon={<BsCircleFill size={12} color="#f59e0b" />}
-                  onClick={async () => {
-                    if (query.status === "none") {
-                      query.status = "expired";
-                    } else if (query.status === "all") {
-                      query.status = "active,archived";
-                    } else if (!query.status) {
-                      query.status = "active,expired";
-                    } else if (query.status === "expired") {
-                      query.status = "none";
-                    } else if (query.status?.includes(",expired")) {
-                      typeof query.status === "string"
-                        ? (query.status = query.status.replace(",expired", ""))
-                        : query.status;
-                    } else if (query.status?.includes("expired,")) {
-                      typeof query.status === "string"
-                        ? (query.status = query.status.replace("expired,", ""))
-                        : query.status;
-                    } else {
-                      if (
-                        query.status.includes("active") &&
-                        query.status.includes("archived")
-                      ) {
-                        query.status = "all";
-                      } else {
-                        query.status = query.status.concat(",expired");
-                      }
-                    }
-
-                    if (query.status === "active") {
-                      delete query.status;
-                    }
-
-                    await push({
-                      pathname: "/",
-                      query,
-                    });
-                  }}
-                >
-                  Expired
-                  {(query.status?.includes("expired") ||
-                    query.status === "all") && (
-                    <BsCheck
-                      size={18}
-                      style={{
-                        position: "absolute",
-                        right: 12,
-                      }}
-                    />
-                  )}
-                </Menu.Item>
-                <Menu.Item
-                  pos="relative"
                   icon={<BsCircleFill size={12} color="#9ca3af" />}
                   onClick={async () => {
                     if (query.status === "none") {
                       query.status = "archived";
                     } else if (query.status === "all") {
-                      query.status = "active,expired";
+                      query.status = "active";
                     } else if (!query.status) {
                       query.status = "active,archived";
                     } else if (query.status === "archived") {
@@ -273,10 +220,7 @@ const Dashboard = () => {
                         ? (query.status = query.status.replace("archived,", ""))
                         : query.status;
                     } else {
-                      if (
-                        query.status.includes("active") &&
-                        query.status.includes("expired")
-                      ) {
+                      if (query.status.includes("active")) {
                         query.status = "all";
                       } else {
                         query.status = query.status.concat(",archived");
