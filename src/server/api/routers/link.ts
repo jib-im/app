@@ -61,4 +61,36 @@ export const linkRouter = createTRPCRouter({
         },
       });
     }),
+  archive: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.link.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: "ARCHIVE",
+        },
+      });
+    }),
+  unarchive: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.link.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          status: "ACTIVE",
+        },
+      });
+    }),
 });

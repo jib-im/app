@@ -48,9 +48,11 @@ const LinkModal = ({
   });
   const [deleteVerification, setDeleteVerification] = useState("");
   const { colorScheme } = useMantineColorScheme();
+
   const createLink = api.link.create.useMutation();
   const editLink = api.link.update.useMutation();
   const deleteLink = api.link.delete.useMutation();
+  const archiveLink = api.link.archive.useMutation();
 
   useEffect(() => {
     setModalState({
@@ -334,7 +336,17 @@ const LinkModal = ({
                     Archived links will still work - they just won&apos;t show
                     up on your main dashboard.
                   </Text>
-                  <Button color="gray">Archive link</Button>
+                  <Button
+                    color="gray"
+                    onClick={async () => {
+                      await archiveLink.mutateAsync({ id: modalType.link.id });
+                      refetch();
+                      onClose();
+                    }}
+                    loading={archiveLink.isLoading}
+                  >
+                    Archive link
+                  </Button>
                 </Stack>
               </>
             );
