@@ -29,4 +29,23 @@ export const linkRouter = createTRPCRouter({
         },
       });
     }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        url: z.string().url(),
+        shortUrl: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.link.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          url: input.url,
+          shortUrl: input.shortUrl,
+        },
+      });
+    }),
 });
