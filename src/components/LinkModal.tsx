@@ -46,9 +46,11 @@ const LinkModal = ({
     url: "",
     shortUrl: "",
   });
+  const [deleteVerification, setDeleteVerification] = useState("");
   const { colorScheme } = useMantineColorScheme();
   const createLink = api.link.create.useMutation();
   const editLink = api.link.update.useMutation();
+  const deleteLink = api.link.delete.useMutation();
 
   useEffect(() => {
     setModalState({
@@ -259,8 +261,17 @@ const LinkModal = ({
             return (
               <>
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
+
+                    if (
+                      deleteVerification !== `jib.im/${modalType.link.shortUrl}`
+                    )
+                      return;
+
+                    await deleteLink.mutateAsync({ id: modalType.link.id });
+                    refetch();
+                    onClose();
                   }}
                 >
                   <Stack>
@@ -278,7 +289,7 @@ const LinkModal = ({
                       >
                         To verify, type{" "}
                         <Text component="span" weight={500}>
-                          jib.im/github
+                          jib.im/{modalType.link.shortUrl}
                         </Text>{" "}
                         below{" "}
                         <Text
@@ -293,10 +304,22 @@ const LinkModal = ({
                         id="delete-link"
                         placeholder="jib.im/github"
                         required
+                        value={deleteVerification}
+                        onChange={(e) => {
+                          setDeleteVerification(e.target.value);
+                        }}
                       />
                     </Box>
 
-                    <Button color="red" type="submit">
+                    <Button
+                      color="red"
+                      type="submit"
+                      loading={deleteLink.isLoading}
+                      disabled={
+                        deleteVerification !==
+                        `jib.im/${modalType.link.shortUrl}`
+                      }
+                    >
                       Delete link
                     </Button>
                   </Stack>
