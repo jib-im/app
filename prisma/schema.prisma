@@ -9,6 +9,12 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum Status {
+  ACTIVE
+  INACTIVE
+  ARCHIVE
+}
+
 model Link {
   id        String   @id @default(cuid())
   shortUrl  String   @unique
@@ -17,7 +23,7 @@ model Link {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   clicks    Int      @default(0)
-  status    String   @default("ACTIVE")
+  status    Status  @default(ACTIVE)
 
   userId       String
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
