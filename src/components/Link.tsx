@@ -16,15 +16,18 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 import LinkModal from "./LinkModal";
+import type { Link as LinkType } from "@prisma/client";
+import Moment from "react-moment";
 
-const LinkComponent = () => {
+const LinkComponent = ({ link }: { link: LinkType }) => {
   const { colorScheme } = useMantineColorScheme();
   const [linkModal, setLinkModal] = useState<{
     isOpen: boolean;
-    link?: { link: string };
+    link?: LinkType;
     type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
   }>({
     isOpen: false,
+    link,
   });
   return (
     <>
@@ -39,16 +42,17 @@ const LinkComponent = () => {
       >
         <Box>
           <Link
-            href=""
+            href={"https://jib.im/" + link.shortUrl}
             style={{
               textDecoration: "none",
             }}
+            target="_blank"
           >
             <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
-              <Text size="lg">jib.im/bricesuazo</Text>
+              <Text size="lg">{"jib.im/" + link.shortUrl}</Text>
             </MediaQuery>
             <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-              <Text>jib.im/bricesuazo</Text>
+              <Text>{link.url}</Text>
             </MediaQuery>
           </Link>
           <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
@@ -61,7 +65,7 @@ const LinkComponent = () => {
         <Flex columnGap="sm" align="center">
           <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
             <Text size="sm" color="gray.6">
-              a month ago
+              <Moment fromNow>{link.createdAt}</Moment>
             </Text>
           </MediaQuery>
           <Menu position="bottom-end" width={128}>
