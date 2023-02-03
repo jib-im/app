@@ -11,7 +11,7 @@ import {
 import type { Link } from "@prisma/client";
 import { BsShuffle } from "react-icons/bs";
 import { api } from "../utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LinkModal = ({
   modalType,
@@ -47,6 +47,15 @@ const LinkModal = ({
     shortUrl: "",
   });
   const { colorScheme } = useMantineColorScheme();
+  const createLink = api.link.create.useMutation();
+  const editLink = api.link.update.useMutation();
+
+  useEffect(() => {
+    setModalState({
+      url: modalType.type === "EDIT" ? modalType.link.url : "",
+      shortUrl: modalType.type === "EDIT" ? modalType.link.shortUrl : "",
+    });
+  }, [modalType.type]);
 
   return (
     <Modal
@@ -74,7 +83,6 @@ const LinkModal = ({
       {(() => {
         switch (modalType.type) {
           case "ADD":
-            const createLink = api.link.create.useMutation();
             return (
               <>
                 <form
@@ -161,8 +169,16 @@ const LinkModal = ({
             return (
               <>
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
+
+                    await editLink.mutateAsync({
+                      id: modalType.link.id,
+                      url: modalState.url,
+                      shortUrl: modalState.shortUrl,
+                    });
+                    refetch();
+                    onClose();
                   }}
                 >
                   <Stack>
@@ -171,6 +187,13 @@ const LinkModal = ({
                       label="Destination Link"
                       withAsterisk
                       required
+                      value={modalState.url}
+                      onChange={(e) => {
+                        setModalState({
+                          ...modalState,
+                          url: e.target.value,
+                        });
+                      }}
                     />
                     <Box>
                       <Flex justify="space-between" align="center">
@@ -209,9 +232,25 @@ const LinkModal = ({
                         icon={<Text size="sm">jib.im/</Text>}
                         required
                         iconWidth={64}
+                        value={modalState.shortUrl}
+                        onChange={(e) => {
+                          setModalState({
+                            ...modalState,
+                            shortUrl: e.target.value,
+                          });
+                        }}
                       />
                     </Box>
-                    <Button type="submit">Edit</Button>
+                    <Button
+                      type="submit"
+                      loading={editLink.isLoading}
+                      disabled={
+                        modalState.url === modalType.link.url &&
+                        modalState.shortUrl === modalType.link.shortUrl
+                      }
+                    >
+                      Edit
+                    </Button>
                   </Stack>
                 </form>
               </>
