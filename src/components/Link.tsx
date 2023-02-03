@@ -29,7 +29,7 @@ const LinkComponent = ({
   const { colorScheme } = useMantineColorScheme();
   const [linkModal, setLinkModal] = useState<{
     isOpen: boolean;
-    type: "EDIT" | "DELETE" | "ARCHIVE" | null;
+    type: "EDIT" | "DELETE" | "ARCHIVE" | "UNARCHIVE" | null;
   }>({
     isOpen: false,
     type: null,
@@ -108,11 +108,11 @@ const LinkComponent = ({
                 onClick={() =>
                   setLinkModal({
                     isOpen: true,
-                    type: "ARCHIVE",
+                    type: link.status === "ARCHIVE" ? "UNARCHIVE" : "ARCHIVE",
                   })
                 }
               >
-                Archive
+                {link.status === "ARCHIVE" ? "Unarchive" : "Archive"}
               </Menu.Item>
               <Menu.Item
                 icon={<BsTrash />}
