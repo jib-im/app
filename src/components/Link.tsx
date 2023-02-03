@@ -19,7 +19,13 @@ import LinkModal from "./LinkModal";
 import type { Link as LinkType } from "@prisma/client";
 import Moment from "react-moment";
 
-const LinkComponent = ({ link }: { link: LinkType }) => {
+const LinkComponent = ({
+  link,
+  refetch,
+}: {
+  link: LinkType;
+  refetch: () => void;
+}) => {
   const { colorScheme } = useMantineColorScheme();
   const [linkModal, setLinkModal] = useState<{
     isOpen: boolean;
@@ -39,6 +45,7 @@ const LinkComponent = ({ link }: { link: LinkType }) => {
             type: null,
           })
         }
+        refetch={refetch}
       />
 
       <Flex
@@ -61,14 +68,14 @@ const LinkComponent = ({ link }: { link: LinkType }) => {
               <Text size="lg">{"jib.im/" + link.shortUrl}</Text>
             </MediaQuery>
             <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-              <Text>{link.url}</Text>
+              <Text>{"jib.im/" + link.shortUrl}</Text>
             </MediaQuery>
           </Link>
           <MediaQuery smallerThan="xs" styles={{ display: "none" }}>
-            <Text>https://github.com/jib-im</Text>
+            <Text>{link.url}</Text>
           </MediaQuery>
           <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-            <Text size="sm">https://github.com/jib-im</Text>
+            <Text size="sm">{link.url}</Text>
           </MediaQuery>
         </Box>
         <Flex columnGap="sm" align="center">

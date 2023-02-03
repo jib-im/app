@@ -10,12 +10,16 @@ import {
 } from "@mantine/core";
 import type { Link } from "@prisma/client";
 import { BsShuffle } from "react-icons/bs";
+import { api } from "../utils/api";
+import { useState } from "react";
 
 const LinkModal = ({
   modalType,
   isOpen,
   onClose,
+  refetch,
 }: {
+  refetch: () => void;
   isOpen: boolean;
   onClose: () => void;
   modalType:
@@ -38,13 +42,23 @@ const LinkModal = ({
         link: Link;
       };
 }) => {
+  const [modalState, setModalState] = useState({
+    url: "",
+    shortUrl: "",
+  });
   const { colorScheme } = useMantineColorScheme();
 
   return (
     <Modal
       centered
       opened={isOpen}
-      onClose={() => onClose()}
+      onClose={() => {
+        onClose();
+        setModalState({
+          url: "",
+          shortUrl: "",
+        });
+      }}
       title={
         modalType.type === "ADD"
           ? "Add Link"
@@ -60,19 +74,34 @@ const LinkModal = ({
       {(() => {
         switch (modalType.type) {
           case "ADD":
+            const createLink = api.link.create.useMutation();
             return (
               <>
                 <form
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
+                    await createLink.mutateAsync({
+                      url: modalState.url,
+                      shortUrl: modalState.shortUrl,
+                    });
+                    refetch();
+                    onClose();
                   }}
                 >
                   <Stack>
                     <TextInput
                       placeholder="https://github.com/bricesuazo"
                       label="Destination Link"
+                      name="url"
                       withAsterisk
                       required
+                      value={modalState.url}
+                      onChange={(e) => {
+                        setModalState({
+                          ...modalState,
+                          url: e.target.value,
+                        });
+                      }}
                     />
                     <Box>
                       <Flex justify="space-between" align="center">
@@ -111,9 +140,19 @@ const LinkModal = ({
                         icon={<Text size="sm">jib.im/</Text>}
                         required
                         iconWidth={64}
+                        name="shortUrl"
+                        value={modalState.shortUrl}
+                        onChange={(e) => {
+                          setModalState({
+                            ...modalState,
+                            shortUrl: e.target.value,
+                          });
+                        }}
                       />
                     </Box>
-                    <Button type="submit">Add link</Button>
+                    <Button type="submit" loading={createLink.isLoading}>
+                      Add link
+                    </Button>
                   </Stack>
                 </form>
               </>
