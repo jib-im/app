@@ -12,6 +12,7 @@ import Head from "next/head";
 import { api } from "../utils/api";
 import Header from "../components/Header";
 
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },

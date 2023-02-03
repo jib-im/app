@@ -105,7 +105,6 @@ const Header = ({ session }: { session: Session }) => {
                 ) : (
                   <BsPersonCircle size={32} />
                 )}
-
                 <Box w={72}>
                   <Text size="xs" align="left" weight="bold" truncate>
                     {session?.user.name}
