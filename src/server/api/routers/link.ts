@@ -3,16 +3,42 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const linkRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.link.findMany({
-      where: {
-        userId: ctx.session.user.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }),
+  getAll: protectedProcedure
+    .input(
+      z
+        .object({
+          sort: z.string().nullish(),
+          status: z.string().nullish(),
+        })
+        .nullish()
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.link.findMany({
+        where:
+          input?.status === undefined
+            ? {
+                userId: ctx.session.user.id,
+                status: "ACTIVE",
+              }
+            : input?.status === "none" || input?.status === "all"
+            ? { userId: ctx.session.user.id }
+            : {
+                userId: ctx.session.user.id,
+                OR: input.status?.split(",").map((status) => ({
+                  status: status.toUpperCase() as "ACTIVE" | "ARCHIVED",
+                })),
+              },
+
+        orderBy:
+          input && input.sort === "clicks"
+            ? {
+                clicks: "desc",
+              }
+            : {
+                createdAt: "desc",
+              },
+      });
+    }),
   create: protectedProcedure
     .input(
       z.object({
@@ -73,7 +99,7 @@ export const linkRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          status: "ARCHIVE",
+          status: "ARCHIVED",
         },
       });
     }),
