@@ -9,45 +9,56 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import type { Link } from "@prisma/client";
-import type { Dispatch, SetStateAction } from "react";
 import { BsShuffle } from "react-icons/bs";
 
 const LinkModal = ({
-  linkModal,
-  setIsOpen,
+  modalType,
+  isOpen,
+  onClose,
 }: {
-  linkModal: {
-    isOpen: boolean;
-    link?: Link;
-    type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
-  };
-  setIsOpen: Dispatch<
-    SetStateAction<{
-      isOpen: boolean;
-      type?: "ADD" | "EDIT" | "DELETE" | "ARCHIVE";
-    }>
-  >;
+  isOpen: boolean;
+  onClose: () => void;
+  modalType:
+    | {
+        type: null;
+      }
+    | {
+        type: "ADD";
+      }
+    | {
+        type: "EDIT";
+        link: Link;
+      }
+    | {
+        type: "DELETE";
+        link: Link;
+      }
+    | {
+        type: "ARCHIVE";
+        link: Link;
+      };
 }) => {
   const { colorScheme } = useMantineColorScheme();
+
   return (
     <Modal
       centered
-      opened={linkModal.isOpen}
-      onClose={() => setIsOpen({ isOpen: false })}
+      opened={isOpen}
+      onClose={() => onClose()}
       title={
-        linkModal.type === "ADD"
+        modalType.type === "ADD"
           ? "Add Link"
-          : linkModal.type === "EDIT"
-          ? `Edit ${linkModal.link?.shortUrl}`
-          : linkModal.type === "DELETE"
-          ? "Delete Link"
-          : linkModal.type === "ARCHIVE"
-          ? "Archive Link"
+          : modalType.type === "EDIT"
+          ? `Edit jib.im/${modalType.link.shortUrl}`
+          : modalType.type === "DELETE"
+          ? `Delete jib.im/${modalType.link.shortUrl}`
+          : modalType.type === "ARCHIVE"
+          ? `Archive  jib.im/${modalType.link.shortUrl}`
           : ""
       }
     >
       {(() => {
-        switch (linkModal.type) {
+        switch (modalType.type) {
           case "ADD":
             return (
               <>
