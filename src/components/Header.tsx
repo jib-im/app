@@ -8,7 +8,8 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { Header as HeaderMantine } from "@mantine/core";
-import { signOut, useSession } from "next-auth/react";
+import { type Session } from "next-auth";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,12 +17,11 @@ import {
   BsBoxArrowInRight,
   BsChevronDown,
   BsFillMoonFill,
+  BsPersonCircle,
   BsSunFill,
 } from "react-icons/bs";
 
-const Header = () => {
-  const { data: session } = useSession();
-
+const Header = ({ session }: { session: Session }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme() as {
     colorScheme: "dark" | "light";
     toggleColorScheme: () => void;
@@ -90,17 +90,21 @@ const Header = () => {
               }}
             >
               <Flex align="center" columnGap="xs">
-                <Image
-                  src={session?.user.image || "/images/default-profile.png"}
-                  width={32}
-                  height={32}
-                  alt={`Profile picture`}
-                  style={{
-                    borderRadius: "50%",
-                    userSelect: "none",
-                    pointerEvents: "none",
-                  }}
-                />
+                {session.user.image ? (
+                  <Image
+                    src={session.user.image}
+                    width={32}
+                    height={32}
+                    alt={`Profile picture`}
+                    style={{
+                      borderRadius: "50%",
+                      userSelect: "none",
+                      pointerEvents: "none",
+                    }}
+                  />
+                ) : (
+                  <BsPersonCircle size={32} />
+                )}
                 <Box w={72}>
                   <Text size="xs" align="left" weight="bold" truncate>
                     {session?.user.name}
