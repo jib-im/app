@@ -1,11 +1,13 @@
 import {
   Box,
   Button,
+  Center,
   Container,
   Divider,
   Flex,
   Menu,
   Stack,
+  Text,
   Title,
   useMantineColorScheme,
 } from "@mantine/core";
@@ -22,6 +24,7 @@ import LinkModal from "../components/LinkModal";
 import { useState } from "react";
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Dashboard = () => {
   const { colorScheme } = useMantineColorScheme();
@@ -253,18 +256,36 @@ const Dashboard = () => {
           </Flex>
 
           <Stack mt={16} spacing="xs">
-            {links.isLoading
-              ? [...Array(8).keys()].map((_, i) => (
-                  <LinkComponent key={i} type="LOADING" />
-                ))
-              : links.data?.map((link) => (
-                  <LinkComponent
-                    key={link.id}
-                    type="DATA"
-                    link={link}
-                    refetch={links.refetch}
+            {links.isLoading ? (
+              [...Array(8).keys()].map((_, i) => (
+                <LinkComponent key={i} type="LOADING" />
+              ))
+            ) : !links.data?.length ? (
+              <Center>
+                <Stack align="center">
+                  <Image
+                    src="/images/no-link.svg"
+                    alt="No link"
+                    width={256}
+                    height={256}
+                    style={{
+                      userSelect: "none",
+                      pointerEvents: "none",
+                    }}
                   />
-                ))}
+                  <Text>No links yet.</Text>
+                </Stack>
+              </Center>
+            ) : (
+              links.data.map((link) => (
+                <LinkComponent
+                  key={link.id}
+                  type="DATA"
+                  link={link}
+                  refetch={links.refetch}
+                />
+              ))
+            )}
           </Stack>
         </Container>
       </main>
