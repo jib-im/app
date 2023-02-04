@@ -125,7 +125,7 @@ const Login = () => {
               email: form.values.email,
               redirect: false,
             }).finally(() => {
-              form.reset;
+              form.reset();
               setState((state) => ({
                 ...state,
                 email: {
