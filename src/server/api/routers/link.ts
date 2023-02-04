@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-
 export const linkRouter = createTRPCRouter({
   getAll: protectedProcedure
     .input(
@@ -119,5 +118,24 @@ export const linkRouter = createTRPCRouter({
           status: "ACTIVE",
         },
       });
+    }),
+  generateShortUrl: protectedProcedure
+    .input(
+      z.object({
+        shortUrl: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const existingLink = await ctx.prisma.link.findFirst({
+        where: {
+          shortUrl: input.shortUrl,
+        },
+      });
+
+      if (existingLink) {
+        throw new Error("Short URL already exists");
+      }
+
+      return input.shortUrl;
     }),
 });

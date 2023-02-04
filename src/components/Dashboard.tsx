@@ -140,7 +140,6 @@ const Dashboard = () => {
                       }}
                     >
                       <BsCircleFill size={12} color="#22c55e" />
-                      <BsCircleFill size={12} color="#f59e0b" />
                       <BsCircleFill size={12} color="#9ca3af" />
                     </Box>
                   }
