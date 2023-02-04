@@ -12,6 +12,7 @@ import type { Link } from "@prisma/client";
 import { BsShuffle } from "react-icons/bs";
 import { api } from "../utils/api";
 import { useEffect, useState } from "react";
+import { generateId } from "../utils/generateId";
 
 const LinkModal = ({
   modalType,
@@ -58,6 +59,21 @@ const LinkModal = ({
   const deleteLink = api.link.delete.useMutation();
   const archiveLink = api.link.archive.useMutation();
   const unarchiveLink = api.link.unarchive.useMutation();
+
+  const generateIdMutation = api.link.generateShortUrl.useMutation();
+
+  const generateShortUrlRecursively = async () => {
+    const id = generateId();
+    const res = await generateIdMutation.mutateAsync({ shortUrl: id });
+    if (res) {
+      setModalState({
+        ...modalState,
+        shortUrl: id,
+      });
+    } else {
+      await generateShortUrlRecursively();
+    }
+  };
 
   useEffect(() => {
     setModalState({
@@ -147,7 +163,10 @@ const LinkModal = ({
                           px={8}
                           h={24}
                           loaderPosition="center"
-                          //   loading={true}
+                          loading={generateIdMutation.isLoading}
+                          onClick={async () => {
+                            await generateShortUrlRecursively();
+                          }}
                         >
                           Randomize
                         </Button>
@@ -231,7 +250,10 @@ const LinkModal = ({
                           px={8}
                           h={24}
                           loaderPosition="center"
-                          //   loading={true}
+                          loading={generateIdMutation.isLoading}
+                          onClick={async () => {
+                            await generateShortUrlRecursively();
+                          }}
                         >
                           Randomize
                         </Button>
