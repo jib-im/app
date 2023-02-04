@@ -253,13 +253,18 @@ const Dashboard = () => {
           </Flex>
 
           <Stack mt={16} spacing="xs">
-            {links.data?.map((link) => (
-              <LinkComponent
-                key={link.id}
-                link={link}
-                refetch={links.refetch}
-              />
-            ))}
+            {links.isLoading
+              ? [...Array(8).keys()].map((_, i) => (
+                  <LinkComponent key={i} type="LOADING" />
+                ))
+              : links.data?.map((link) => (
+                  <LinkComponent
+                    key={link.id}
+                    type="DATA"
+                    link={link}
+                    refetch={links.refetch}
+                  />
+                ))}
           </Stack>
         </Container>
       </main>
